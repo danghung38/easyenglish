@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_bg_app"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="@color/white">
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_gravity="center"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_timer"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_time_reading"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:fontFamily="@font/font_inter"
+                android:textFontWeight="730" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_writing_test"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_inter"
+                android:textFontWeight="730" />
+        </TableRow>
+
+    </TableRow>
+
+    <TextView
+        android:id="@+id/tvWritingQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_writing_instruction"
+        android:textColor="@color/black"
+        android:textFontWeight="500"
+        android:textSize="15sp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
+        android:fontFamily="@font/font_inter" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/font_inter"
+            android:gravity="start"
+            android:text="@string/txt_your_answer"
+            android:textColor="@color/color_text_app"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/tvToTalWords"
+            android:layout_width="70dp"
+            android:padding="2dp"
+            android:layout_gravity="center"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_total_writing"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_total_words_writing"
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="11sp"
+            tools:ignore="SmallSp,TextContrastCheck,TextSizeCheck" />
+
+
+    </TableRow>
+
+    <EditText
+        android:id="@+id/edtWriting"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:layout_weight="1"
+        android:autofillHints="@string/txt_des_question_writing"
+        android:background="@drawable/bg_edt_writing"
+        android:fontFamily="sans-serif-light"
+        android:gravity="start|top"
+        android:hint="@string/txt_des_question_writing"
+        android:inputType="textMultiLine"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/color_hint"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+
+    <TableRow
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_start_test"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_start_test"
+            app:tint="@android:color/white"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_submit"
+            android:textColor="@android:color/white"
+            android:textFontWeight="730"
+            android:textSize="16sp" />
+
+    </TableRow>
+
+</LinearLayout>

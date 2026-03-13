@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:background="@color/white"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="13dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:id="@+id/tvSkillName"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_skill"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:text="@string/txt_listening"
+                        android:textColor="@color/white"
+                        android:textFontWeight="600"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+
+                    <TextView
+                        android:id="@+id/tvNameExam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:padding="2dp"
+                        android:text="@string/txt_title_exam"
+                        android:textColor="@color/black"
+                        android:textFontWeight="600"
+                        android:textSize="11sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/ic_date"
+                            app:tint="@color/color_splash_des"
+                            tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                        <TextView
+                            android:id="@+id/tvDateExam"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/txt_history_day"
+                            android:textColor="@color/color_splash_des"
+                            android:textFontWeight="450"
+                            android:textSize="13sp"
+                            tools:ignore="TextContrastCheck" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="5dp"
+                            android:src="@drawable/ic_complete"
+                            tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="center_vertical|start"
+                            android:text="@string/txt_completed"
+                            android:textColor="@color/color_completed"
+                            android:textFontWeight="450"
+                            android:textSize="13sp"
+                            tools:ignore="TextContrastCheck" />
+
+                    </TableRow>
+                </TableRow>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:ignore="TextSizeCheck">
+
+                <TextView
+                    android:id="@+id/tvBandScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="800"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_band_score"
+                    android:textColor="@color/color_app"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="450"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/txt_band"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck" />
+
+            </LinearLayout>
+
+
+
+        </TableRow>
+
+        <TextView
+            android:id="@+id/btnViewDetails"
+            android:layout_gravity="center"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_btn_detail"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_view_details"
+            android:textColor="@color/color_app"
+            android:textFontWeight="800"
+            android:textSize="15sp"
+            tools:ignore="TextContrastCheck" />
+
+    </LinearLayout>
+
+
+
+
+</androidx.cardview.widget.CardView>

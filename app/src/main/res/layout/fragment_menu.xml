@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_bg_app"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white"
+            android:fontFamily="@font/font_inter"
+            android:gravity="start|center_vertical"
+            android:paddingStart="20dp"
+            android:text="@string/txt_title_home"
+            android:textColor="@color/color_app"
+            android:textFontWeight="800"
+            android:textSize="24sp"
+            tools:ignore="RtlSymmetry,TextSizeCheck" />
+
+        <FrameLayout
+            android:id="@+id/fr_frg_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/color_bg_app" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/lnHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivHome"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="1dp"
+                    android:src="@drawable/ic_home"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/tvHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_home"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnExams"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivExams"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="1dp"
+                    android:src="@drawable/ic_exam"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/tvExams"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_exams"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnLearn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivLearn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="1dp"
+                    android:src="@drawable/ic_learn"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/tvLearn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_learn"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="1dp"
+                    android:src="@drawable/ic_profile"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/tvProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_profile"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+        </TableRow>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/viewLoading"
+        layout="@layout/view_loading"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:focusable="true"
+        android:visibility="gone" />
+
+</FrameLayout>

@@ -1,0 +1,119 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="25dp"
+                android:textFontWeight="700"
+                android:background="@drawable/bg_question"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/txt_question"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_marginEnd="20dp"
+                tools:ignore="InefficientWeight" />
+
+            <TextView
+                android:id="@+id/tvCorrectWrong"
+                android:layout_width="90dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_question"
+                android:backgroundTint="@color/color_correct"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="@string/txt_correct"
+                android:textColor="@color/white"
+                android:textFontWeight="700"
+                android:textSize="12sp"
+                tools:ignore="InefficientWeight,TextContrastCheck" />
+        </TableRow>
+
+
+
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/font_inter"
+            android:gravity="start"
+            android:maxLines="4"
+            android:text="@string/txt_question_read"
+            android:textColor="@color/black"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+        <!-- Options -->
+        <RadioGroup
+            android:id="@+id/rgOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/ansA"
+                style="@style/ReadingOption"
+                app:buttonTint="@color/radio_button_selector"
+                android:text="@string/txt_ansA"
+                tools:ignore="VisualLintButtonSize" />
+
+            <RadioButton
+                android:id="@+id/ansB"
+                android:layout_marginTop="3dp"
+                style="@style/ReadingOption"
+                app:buttonTint="@color/radio_button_selector"
+                android:text="@string/txt_ansB"
+                tools:ignore="VisualLintButtonSize" />
+
+            <RadioButton
+                android:id="@+id/ansC"
+                android:layout_marginTop="3dp"
+                style="@style/ReadingOption"
+                app:buttonTint="@color/radio_button_selector"
+                android:text="@string/txt_ansC"
+                tools:ignore="VisualLintButtonSize" />
+
+            <RadioButton
+                android:id="@+id/ansD"
+                android:layout_marginTop="3dp"
+                style="@style/ReadingOption"
+                app:buttonTint="@color/radio_button_selector"
+                android:text="@string/txt_ansD"
+                tools:ignore="VisualLintButtonSize" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvExplain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/font_inter"
+            android:gravity="start"
+            android:maxLines="5"
+            android:text="@string/txt_explain"
+            android:textColor="@color/black"
+            android:textFontWeight="600"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="195dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_cre"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/tvTitleCre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:lineSpacingExtra="3dp"
+            android:textStyle="italic"
+            android:text="@string/txt_cre1"
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="18sp"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="start"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/txt_author1"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:textSize="14sp"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+</LinearLayout>

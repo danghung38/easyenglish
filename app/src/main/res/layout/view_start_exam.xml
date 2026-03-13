@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_full_test"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
+
+            <TextView
+                android:id="@+id/tvTitleSkill"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
+                android:text="@string/txt_listening"
+                android:textFontWeight="800"
+                android:textSize="22sp"
+                tools:ignore="TextSizeCheck" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/txt_des_start_exam"
+                android:textColor="@color/color_splash_des"
+                android:textFontWeight="400"
+                android:textSize="14sp"
+                tools:ignore="TextContrastCheck" />
+
+            <TableRow
+                android:layout_width="300dp"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:id="@+id/btnStart"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="52dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/bg_btn_start"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:padding="5dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_start_full"
+                        app:tint="@android:color/white"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="center"
+                        android:text="@string/txt_start"
+                        android:textColor="@android:color/white"
+                        android:textFontWeight="730"
+                        android:textSize="16sp" />
+
+                </TableRow>
+                <TableRow
+                    android:id="@+id/btnClose"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/bg_btn_start"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="center"
+                        android:text="@string/txt_close"
+                        android:textColor="@android:color/white"
+                        android:textFontWeight="730"
+                        android:textSize="16sp" />
+
+                </TableRow>
+
+            </TableRow>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gender_list">
+        <item>MALE</item>
+        <item>FEMALE</item>
+        <item>OTHER</item>
+    </string-array>
+
+    <string-array name="target_list">
+        <item>6.0</item>
+        <item>6.5</item>
+        <item>7.0</item>
+        <item>7.5</item>
+        <item>8.0</item>
+        <item>8.5</item>
+        <item>9.0</item>
+    </string-array>
+</resources>

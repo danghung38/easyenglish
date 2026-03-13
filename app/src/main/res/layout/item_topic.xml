@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="175dp"
+    android:layout_height="260dp"
+    android:layout_marginEnd="20dp"
+    android:background="@drawable/bg_card_word"
+    android:orientation="vertical"
+    tools:ignore="TextSizeCheck">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvToTalWords"
+            android:layout_width="70dp"
+            android:padding="2dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/bg_number_word"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_total_words"
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="10sp"
+            tools:ignore="SmallSp,TextContrastCheck,TextSizeCheck" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tvVocabularyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font_inter"
+            android:gravity="start"
+            android:text="@string/txt_vocabulary_title"
+            android:textColor="@color/black"
+            android:textFontWeight="800"
+            android:textSize="14sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="3"
+            android:text="@string/txt_title_vocabulary_des"
+            android:textColor="@color/color_splash_des"
+            android:lineSpacingExtra="2dp"
+            android:textFontWeight="400"
+            android:textSize="11sp"
+            tools:ignore="SmallSp,TextContrastCheck" />
+
+        <TableRow
+            android:id="@+id/btnLearnNow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            tools:ignore="TouchTargetSizeCheck">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_inter"
+                android:gravity="start"
+                android:text="@string/txt_learn_now"
+                android:textColor="@color/color_app"
+                android:textFontWeight="800"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_next"
+                app:tint="@color/color_app"
+                tools:ignore="ContentDescription" />
+        </TableRow>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

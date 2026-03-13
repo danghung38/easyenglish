@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvSelected"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fontFamily="sans-serif-light"
+    android:gravity="center_vertical"
+    android:paddingStart="0dp"
+    android:textColor="@color/color_text_app"
+    android:textFontWeight="400"
+    android:textSize="13sp"
+    tools:ignore="RtlSymmetry" />

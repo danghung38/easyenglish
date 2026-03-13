@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_app">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBack"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/color_card_back"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvMeaning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_meaning_vocabulary"
+                    android:textColor="@color/black"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/tvExample"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/bg_example"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLines="2"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/txt_example_vocabulary"
+                    android:textColor="@color/black"
+                    android:textFontWeight="450"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/cardFront"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvVocabulary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_new_vocabulary"
+                    android:textSize="26sp" />
+
+                <TextView
+                    android:id="@+id/tvNoun"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/txt_vocabulary_noun"
+                    android:textColor="@color/color_splash_des"
+                    android:textFontWeight="450"
+                    android:textSize="16sp"
+                    tools:ignore="TextContrastCheck" />
+
+                <ImageView
+                    android:id="@+id/ivSound"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_sound"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:paddingHorizontal="30dp">
+
+            <LinearLayout
+                android:id="@+id/btnPrevious"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@drawable/bg_btn_square"
+                    android:backgroundTint="@color/color_bg_btn">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="13dp"
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/white"
+                        tools:ignore="ContentDescription,ImageContrastCheck" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/txt_previous"
+                    android:textColor="@color/color_text_app"
+                    android:textFontWeight="700"
+                    android:textSize="13sp"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnFlip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@drawable/bg_btn_square">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp"
+                        android:src="@drawable/ic_flip"
+                        app:tint="@color/color_gray"
+                        tools:ignore="ContentDescription" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/txt_flip"
+                    android:textColor="@color/color_text_app"
+                    android:textFontWeight="700"
+                    android:textSize="13sp"
+                    tools:ignore="TextContrastCheck" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/btnNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@drawable/bg_btn_square"
+                    android:backgroundTint="@color/color_bg_btn">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="22dp"
+                        android:src="@drawable/ic_next"
+                        app:tint="@color/white"
+                        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/txt_next"
+                    android:textColor="@color/color_text_app"
+                    android:textFontWeight="700"
+                    android:textSize="13sp"
+                    tools:ignore="TextContrastCheck" />
+
+
+            </LinearLayout>
+
+        </TableRow>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

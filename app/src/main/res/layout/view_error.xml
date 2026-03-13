@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_error"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
+                android:text="@string/txt_error"
+                android:textFontWeight="800"
+                android:textSize="22sp"
+                tools:ignore="TextSizeCheck" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/txt_error_des"
+                android:textColor="@color/color_splash_des"
+                android:textFontWeight="400"
+                android:textSize="14sp"
+                tools:ignore="TextContrastCheck" />
+
+            <TableRow
+                android:layout_width="300dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/btnRetry"
+                    android:clickable="true"
+                    android:layout_width="130dp"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="@color/color_retry"
+                    android:background="@drawable/bg_btn_register"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:paddingBottom="30dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="@string/txt_retry"
+                    android:textColor="@android:color/white"
+                    android:textFontWeight="730"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/btnExit"
+                    android:clickable="true"
+                    android:layout_width="130dp"
+                    android:layout_height="84dp"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="@color/color_error"
+                    android:background="@drawable/bg_btn_register"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:paddingBottom="30dp"
+                    android:text="@string/txt_exit"
+                    android:textColor="@android:color/white"
+                    android:textFontWeight="730"
+                    android:textSize="16sp" />
+            </TableRow>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

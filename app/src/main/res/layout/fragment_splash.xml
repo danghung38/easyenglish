@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="-100dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@drawable/ic_logo"
+        android:layout_gravity="center"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:fontFamily="@font/font_inter"
+        android:gravity="center"
+        android:text="@string/txt_splash"
+        android:textFontWeight="1000"
+        android:textSize="30sp"
+        tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/txt_splash_more"
+        android:textFontWeight="370"
+        android:textSize="16sp"
+        tools:ignore="TextContrastCheck" />
+</LinearLayout>

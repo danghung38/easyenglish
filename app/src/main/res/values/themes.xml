@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Chỉ cần để theme như thế này là đủ -->
+    <style name="Base.Theme.ELearning" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- KHÔNG CẦN THÊM GÌ CẢ - để mặc định -->
+    </style>
+
+    <style name="Theme.ELearning" parent="Base.Theme.ELearning" />
+</resources>

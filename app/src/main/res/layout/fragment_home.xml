@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_app"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_logo"
+                        tools:ignore="ContentDescription" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="20dp"
+                        tools:ignore="RtlSymmetry">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/font_inter"
+                            android:gravity="start"
+                            android:maxLines="2"
+                            android:text="@string/txt_about_us"
+                            android:textColor="@color/color_app"
+                            android:textFontWeight="600"
+                            android:textSize="20sp"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/tvDesExam"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="sans-serif-light"
+                            android:gravity="start"
+                            android:text="@string/txt_des_about"
+                            android:textColor="@color/color_splash_des"
+                            android:textFontWeight="450"
+                            android:textSize="13sp"
+                            tools:ignore="TextContrastCheck,VisualLintLongText" />
+
+                    </LinearLayout>
+
+                </TableRow>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpCre"
+                android:layout_width="match_parent"
+                android:layout_height="195dp"
+                android:clipToPadding="false" />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dotCre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                app:dotsColor="#CCCCCC"
+                app:dotsSize="8dp"
+                app:dotsSpacing="3dp"
+                app:progressMode="false"
+                app:selectedDotColor="#3B82F6" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/font_inter"
+                android:gravity="start"
+                android:text="@string/txt_practice_by_skills"
+                android:textFontWeight="800"
+                android:textSize="22sp"
+                tools:ignore="TextSizeCheck" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <LinearLayout
+                    android:id="@+id/ln_listening"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ic_home"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_listening2"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="start"
+                        android:text="@string/txt_listening"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="start"
+                        android:text="@string/txt_des_listening"
+                        android:textColor="@color/color_splash_des"
+                        android:textFontWeight="450"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_reading"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ic_home"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_reading2"
+                        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="start"
+                        android:text="@string/txt_reading"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="start"
+                        android:text="@string/txt_des_reading"
+                        android:textColor="@color/color_splash_des"
+                        android:textFontWeight="450"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </LinearLayout>
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:id="@+id/ln_speaking"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ic_home"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_speaking2"
+                        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="start"
+                        android:text="@string/txt_speaking"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="start"
+                        android:text="@string/txt_des_speaking"
+                        android:textColor="@color/color_splash_des"
+                        android:textFontWeight="450"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ln_writing"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_ic_home"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_writing2"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="@font/font_inter"
+                        android:gravity="start"
+                        android:text="@string/txt_writing"
+                        android:textFontWeight="600"
+                        android:textSize="20sp"
+                        tools:ignore="TextSizeCheck" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="start"
+                        android:text="@string/txt_des_writing"
+                        android:textColor="@color/color_splash_des"
+                        android:textFontWeight="450"
+                        android:textSize="11sp"
+                        tools:ignore="TextContrastCheck" />
+                </LinearLayout>
+
+
+            </TableRow>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>
