@@ -1,0 +1,66 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  ai:
+    openai:
+      api-key: AIzaSyBMT6EwdTobiK7DRf2RHNxpHoEVbIZl_VA
+      chat:
+        base-url: https://generativelanguage.googleapis.com
+        completions-path: /v1beta/openai/chat/completions
+        options:
+          model: gemini-2.0-flash
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB   # Giới hạn dung lượng tối đa của mỗi file (ở đây là 10MB)
+      max-request-size: 20MB  # Giới hạn dung lượng tối đa của toàn bộ request
+  datasource:
+    url: "jdbc:mysql://localhost:3306/elearning2"
+    username: root
+    password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  sendGrid:
+    apiHung: ${SENDGRID_KEY}
+#    apiKey: ${SENDGRID_API_KEY}
+    fromEmail: huyhoang23104@gmail.com
+    templateId: d-a242ff783e684ffdaf6b912ddf6e97e8
+    resetPasswordId: d-79b6fab33d2b4659a146ad5a8f89d438 
+    verificationLink: http://localhost:8080/api/users/confirm-email
+    resetPasswordLink: http://localhost:5173/reset/confirm/
+
+jwt:
+  signerKey: ${JWT_KEY}
+  valid-duration: 3600 # in second
+  refreshable-duration: 604800 # in seconds
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+openapi:
+  service:
+    api-docs: backend-service
+    server: http://localhost:${server.port}/api
+    title: Backend service
+    version: 1.0.0
+
+aws:
+  s3.secret-key: ${S3_SECRET_KEY}
+  s3.access-key: ${S3_ACCESS_KEY}
+  s3.bucket-name: "hung-hotel-images"
+
+# IELTSensei Service Configuration
+# Handles both transcription (OpenAI Whisper API) and AI grading
+ielts-sensei:
+  service:
+    url: http://localhost:5000
+    timeout: 60000              # Timeout in milliseconds (60 seconds)
+  rag-examples:
+    path: d:/FILE_HOC_TAP/GIT CLONE/Project ENGLISH/py_service/pyhton_service/rag_examples.json  # Path to RAG examples JSON file
