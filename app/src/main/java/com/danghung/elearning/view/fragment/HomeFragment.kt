@@ -11,14 +11,14 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.danghung.elearning.R
-import com.danghung.elearning.databinding.HomeFragmentBinding
+import com.danghung.elearning.databinding.FragmentHomeBinding
 import com.danghung.elearning.model.CreItem
 import com.danghung.elearning.view.adapter.CreAdapter
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.viewmodel.CommomVM
 
 
-class HomeFragment : BaseFragment<HomeFragmentBinding, CommomVM>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
     companion object {
         val TAG: String = HomeFragment::class.java.name
     }
@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding, CommomVM>() {
     override fun initViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): HomeFragmentBinding = HomeFragmentBinding.inflate(inflater, container, false)
+    ): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
     override fun initViews() {
         setupCreViewPager()
