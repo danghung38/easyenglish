@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.danghung.elearning.R
 import com.danghung.elearning.api.req.SubmitSpeakingExamReq
 import com.danghung.elearning.api.res.ApiErrorRes
@@ -24,6 +25,9 @@ import com.danghung.elearning.viewmodel.SpeakingVM
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.EVALUATE_SPEAKING
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.GET_QUESTIONS_SPEAKING
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.SUBMIT_SPEAKING
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 @SuppressLint("SetTextI18n")
@@ -39,6 +43,7 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
     private lateinit var recorder: AudioRecorder
     private var currentQuestionId: Long = 0
     private var isPlaying = false
+    private var isRecording = false
     private val duration: Int
         get() = startData.examPartRes?.duration ?: 0
 
@@ -112,25 +117,39 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
     }
 
     private fun startRecording() {
-        if (tempFile.exists()) tempFile.delete()
-        recorder.start(tempFile)
-        binding.ivRecordAnswer.isEnabled = false
-        enableButton(binding.btnStopRecording)
-        disableButton(binding.btnStartRecording)
-        disableButton(binding.btnSubmitSpeaking)
-        binding.tvRecordingStatus.text = "Recording started. Please speak now!"
-        notify(binding.tvRecordingStatus.text.toString())
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (tempFile.exists()) tempFile.delete()
+            recorder.start(tempFile)
+            isRecording = true
+
+            withContext(Dispatchers.Main) {
+                binding.ivRecordAnswer.isEnabled = false
+                enableButton(binding.btnStopRecording)
+                disableButton(binding.btnStartRecording)
+                disableButton(binding.btnSubmitSpeaking)
+                binding.tvRecordingStatus.text = "Recording started. Please speak now!"
+                notify(binding.tvRecordingStatus.text.toString())
+            }
+        }
     }
 
 
     private fun stopRecording() {
-        recorder.stop()
-        enableButton(binding.btnStartRecording)
-        enableButton(binding.btnSubmitSpeaking)
-        disableButton(binding.btnStopRecording)
-        binding.ivRecordAnswer.isEnabled = true
-        binding.tvRecordingStatus.text = "Recording stopped. You can play or submit your answer."
-        notify(binding.tvRecordingStatus.text.toString())
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                recorder.stop()
+                isRecording = false
+            }
+
+            // Chỉ chạy khi stop xong
+            enableButton(binding.btnStartRecording)
+            enableButton(binding.btnSubmitSpeaking)
+            disableButton(binding.btnStopRecording)
+            binding.ivRecordAnswer.isEnabled = true
+            binding.tvRecordingStatus.text =
+                "Recording stopped. You can play or submit your answer."
+            notify(binding.tvRecordingStatus.text.toString())
+        }
     }
 
 
@@ -141,7 +160,21 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
         viewModel.stopCountdown()
         binding.tvTime.text = "00:00"
 
-        submitSpeaking(isAuto = true)
+        lifecycleScope.launch {
+            // Nếu đang record thì stop trước
+            if (isRecording) {
+                withContext(Dispatchers.IO) {
+                    try {
+                        recorder.stop()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                isRecording = false
+            }
+
+            submitSpeaking(isAuto = true)
+        }
     }
 
     private fun submitSpeaking(isAuto: Boolean) {
@@ -238,15 +271,6 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
         dialog.show()
     }
 
-    override fun onExit() {
-        requireActivity().finish()
-    }
-
-    override fun onRetry() {
-        callBack.showLoading()
-        viewModel.retryLastApi()
-    }
-
     override fun onResult() {
         callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
     }
@@ -268,7 +292,16 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
 
     override fun onDestroy() {
         viewModel.stopCountdown()
-        recorder.stop()
+
+        if (isRecording) {
+            try {
+                recorder.stop()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            isRecording = false
+        }
+
         if (tempFile.exists()) tempFile.delete()
         super.onDestroy()
     }
