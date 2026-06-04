@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.danghung.elearning.R
 import com.danghung.elearning.api.res.UserAnswerRes
+import androidx.media3.exoplayer.ExoPlayer
 
 @SuppressLint("SetTextI18n")
 class ListeningHistoryAdapter(
@@ -23,18 +24,20 @@ class ListeningHistoryAdapter(
     }
 
     private var currentPlayingPosition = -1
-    private var isPlaying = false
+    private var isCurrentlyPlaying = false
 
-    private val durationMap = mutableMapOf<String, Long>()
-
-    fun updateDuration(audioUrl: String, duration: Long) {
-        durationMap[audioUrl] = duration
-        notifyDataSetChanged()
-    }
+    /**
+     * Callback kết nối trực tiếp đến playerPool của Fragment để lấy thông tin audio thời gian thực
+     */
+    var playerProvider: ((String) -> ExoPlayer?)? = null
 
     interface OnListeningHistoryListener {
         fun onPlayClicked(position: Int, audioUrl: String)
     }
+
+    // -----------------------------------------------------------------------
+    // RecyclerView
+    // -----------------------------------------------------------------------
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListeningHistoryHolder {
         val view = LayoutInflater.from(parent.context)
@@ -48,116 +51,116 @@ class ListeningHistoryAdapter(
         holder.bind(items[position], position)
     }
 
+    // -----------------------------------------------------------------------
+    // Public API
+    // -----------------------------------------------------------------------
+
+    /** Chỉ refresh 2 item bị ảnh hưởng, giữ nguyên trạng thái các item còn lại */
+    fun setPlayingState(position: Int, playing: Boolean) {
+        val old = currentPlayingPosition
+        currentPlayingPosition = position
+        isCurrentlyPlaying = playing
+        if (old != -1 && old != position) notifyItemChanged(old)
+        if (position != -1) notifyItemChanged(position)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<UserAnswerRes>) {
         items = newItems
         notifyDataSetChanged()
     }
 
+    // -----------------------------------------------------------------------
+    // ViewHolder
+    // -----------------------------------------------------------------------
+
     inner class ListeningHistoryHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private val tvCorrectWrong: TextView = v.findViewById(R.id.tvCorrectWrong)
-        private val tvExplain: TextView = v.findViewById(R.id.tvExplain)
-
-        private val ansA: RadioButton = v.findViewById(R.id.ansA)
-        private val ansB: RadioButton = v.findViewById(R.id.ansB)
-        private val ansC: RadioButton = v.findViewById(R.id.ansC)
-
-        private val ivPlay: ImageView = v.findViewById(R.id.ivPlay)
-        private val seekBar: SeekBar = v.findViewById(R.id.seekBar)
-        private val tvDuration: TextView = v.findViewById(R.id.tvDuration)
+        private val tvExplain: TextView      = v.findViewById(R.id.tvExplain)
+        private val ansA: RadioButton        = v.findViewById(R.id.ansA)
+        private val ansB: RadioButton        = v.findViewById(R.id.ansB)
+        private val ansC: RadioButton        = v.findViewById(R.id.ansC)
+        private val ivPlay: ImageView        = v.findViewById(R.id.ivPlay)
+        private val seekBar: SeekBar         = v.findViewById(R.id.seekBar)
+        private val tvDuration: TextView     = v.findViewById(R.id.tvDuration)
 
         @SuppressLint("PrivateResource")
         fun bind(item: UserAnswerRes, position: Int) {
-
             val question = item.question ?: return
-            val options = question.optionRes ?: emptyList()
+            val options  = question.optionRes ?: emptyList()
 
+            // Icon play/pause tương ứng với trạng thái hiện tại
             ivPlay.setImageLevel(
-                if (position == currentPlayingPosition && isPlaying)
-                    LEVEL_PLAY else LEVEL_IDLE
+                if (position == currentPlayingPosition && isCurrentlyPlaying) LEVEL_PLAY
+                else LEVEL_IDLE
             )
 
+            // Lấy thông tin player đã qua cơ chế preload ngầm
+            val player = question.audioUrl?.let { playerProvider?.invoke(it) }
+            val duration = player?.duration ?: 0L
+            val current = player?.currentPosition ?: 0L
+
+            if (duration > 0) {
+                // Hiển thị chính xác mốc tiến trình và thời lượng thật (ví dụ: 0:00/0:21 hoặc vị trí đang pause)
+                seekBar.progress = (current * 100 / duration).toInt()
+                tvDuration.text  = "${formatTime(current)}/${formatTime(duration)}"
+            } else {
+                seekBar.progress = 0
+                tvDuration.text  = "0:00/0:00"
+            }
+
+            // Options (read-only, highlight đúng/sai)
             fun bindOption(rb: RadioButton, index: Int) {
-
                 if (index < options.size) {
-
                     val option = options[index]
-
                     rb.visibility = View.VISIBLE
-                    rb.text = option.content
-                    rb.isChecked = option.id == item.selectedOptionId
-                    rb.isEnabled = false
-
-                    // highlight
-                    if (option.id == question.correctOptionId) {
-                        rb.setBackgroundResource(R.drawable.bg_answer_correct)
-                    } else if (option.id == item.selectedOptionId) {
-                        rb.setBackgroundResource(R.drawable.bg_answer_wrong)
-                    } else {
-                        rb.setBackgroundResource(android.R.color.transparent)
-                    }
-
+                    rb.text       = option.content
+                    rb.isChecked  = option.id == item.selectedOptionId
+                    rb.isEnabled  = false
+                    rb.setBackgroundResource(
+                        when {
+                            option.id == question.correctOptionId  -> R.drawable.bg_answer_correct
+                            option.id == item.selectedOptionId     -> R.drawable.bg_answer_wrong
+                            else                                   -> android.R.color.transparent
+                        }
+                    )
                 } else {
                     rb.visibility = View.GONE
                 }
             }
-
             bindOption(ansA, 0)
             bindOption(ansB, 1)
             bindOption(ansC, 2)
 
-            tvCorrectWrong.text = if (item.score == 1.0) "CORRECT" else "WRONG"
-
-            val color =
-                if (item.score == 1.0) R.color.color_correct
-                else R.color.color_wrong
-
-            tvCorrectWrong.backgroundTintList =
-                ContextCompat.getColorStateList(itemView.context, color)
+            // Correct / Wrong badge
+            val correct = item.score == 1.0
+            tvCorrectWrong.text = if (correct) "CORRECT" else "WRONG"
+            tvCorrectWrong.backgroundTintList = ContextCompat.getColorStateList(
+                itemView.context,
+                if (correct) R.color.color_correct else R.color.color_wrong
+            )
 
             tvExplain.text = "Explain: ${question.explain}"
 
             ivPlay.setOnClickListener {
-                it.startAnimation(AnimationUtils.loadAnimation(itemView.context, androidx.appcompat.R.anim.abc_fade_in))
+                it.startAnimation(
+                    AnimationUtils.loadAnimation(itemView.context, androidx.appcompat.R.anim.abc_fade_in)
+                )
                 listener.onPlayClicked(position, question.audioUrl ?: "")
             }
-
-            val duration = durationMap[question.audioUrl]
-
-            seekBar.progress = 0
-
-            tvDuration.text =
-                if (duration != null)
-                    "0:00/${formatTime(duration)}"
-                else
-                    "0:00/0:00"
         }
 
-        fun updatePlayState(isPlaying: Boolean) {
-            ivPlay.setImageLevel(
-                if (isPlaying) LEVEL_PLAY
-                else LEVEL_IDLE
-            )
-        }
         fun updateProgress(current: Long, duration: Long) {
-
             if (duration <= 0) return
-
-            val percent = (current * 100 / duration).toInt()
-            seekBar.progress = percent
-            tvDuration.text = "${formatTime(current)}/${formatTime(duration)}"
+            seekBar.progress = (current * 100 / duration).toInt()
+            tvDuration.text  = "${formatTime(current)}/${formatTime(duration)}"
         }
     }
 
     @SuppressLint("DefaultLocale")
-    private fun formatTime(ms: Long): String {
-
+    fun formatTime(ms: Long): String {
         val totalSec = ms / 1000
-        val min = totalSec / 60
-        val sec = totalSec % 60
-
-        return String.format("%d:%02d", min, sec)
+        return String.format("%d:%02d", totalSec / 60, totalSec % 60)
     }
-
 }

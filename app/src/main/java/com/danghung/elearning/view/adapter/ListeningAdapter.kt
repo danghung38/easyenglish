@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.danghung.elearning.R
 import com.danghung.elearning.api.req.AnswerRLPartReq
 import com.danghung.elearning.api.res.QuestionRes
+import androidx.media3.exoplayer.ExoPlayer
 
 @SuppressLint("SetTextI18n")
 class ListeningAdapter(
@@ -22,14 +23,21 @@ class ListeningAdapter(
         const val LEVEL_PLAY = 1
     }
 
-    private val durationMap = mutableMapOf<String, Long>()
-
-
     private var currentPlayingPosition = -1
-    private var isPlaying = false
+    private var isCurrentlyPlaying = false
 
     private val questions = items.toMutableList()
     private val selectedAnswers = mutableMapOf<Long, Long>()
+
+    /** * Cung cấp một lambda/callback để Adapter có thể chủ động truy vấn nhanh thông tin
+     * thời gian thực (duration, currentPosition) từ playerPool nằm ngoài Fragment.
+     */
+    var playerProvider: ((String) -> ExoPlayer?)? = null
+
+    interface OnListeningListener {
+        fun onAnswerSelected(answer: AnswerRLPartReq)
+        fun onPlayClicked(position: Int, audioUrl: String)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListeningHolder {
         val view = LayoutInflater.from(parent.context)
@@ -43,13 +51,21 @@ class ListeningAdapter(
         holder.bind(questions[position], position)
     }
 
-    interface OnListeningListener {
-        fun onAnswerSelected(answer: AnswerRLPartReq)
-        fun onPlayClicked(position: Int, audioUrl: String)
+    // -----------------------------------------------------------------------
+    // Public API
+    // -----------------------------------------------------------------------
+
+    fun setPlayingState(position: Int, playing: Boolean) {
+        val old = currentPlayingPosition
+        currentPlayingPosition = position
+        isCurrentlyPlaying = playing
+        if (old != -1 && old != position) notifyItemChanged(old)
+        if (position != -1) notifyItemChanged(position)
     }
 
-    fun updateDuration(audioUrl: String, duration: Long) {
-        durationMap[audioUrl] = duration
+    fun resetAllPlayState() {
+        currentPlayingPosition = -1
+        isCurrentlyPlaying = false
         notifyDataSetChanged()
     }
 
@@ -61,51 +77,60 @@ class ListeningAdapter(
         notifyDataSetChanged()
     }
 
+    // -----------------------------------------------------------------------
+    // ViewHolder
+    // -----------------------------------------------------------------------
+
     inner class ListeningHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private val tvQuestionNumber: TextView = v.findViewById(R.id.tvQuestionNumber)
-        private val rgOptions: RadioGroup = v.findViewById(R.id.rgOptions)
-        private val ansA: RadioButton = v.findViewById(R.id.ansA)
-        private val ansB: RadioButton = v.findViewById(R.id.ansB)
-        private val ansC: RadioButton = v.findViewById(R.id.ansC)
-        private val ivPlay: ImageView = v.findViewById(R.id.ivPlay)
-        private val seekBar: SeekBar = v.findViewById(R.id.seekBar)
-        private val tvDuration: TextView = v.findViewById(R.id.tvDuration)
+        private val rgOptions: RadioGroup      = v.findViewById(R.id.rgOptions)
+        private val ansA: RadioButton          = v.findViewById(R.id.ansA)
+        private val ansB: RadioButton          = v.findViewById(R.id.ansB)
+        private val ansC: RadioButton          = v.findViewById(R.id.ansC)
+        private val ivPlay: ImageView          = v.findViewById(R.id.ivPlay)
+        private val seekBar: SeekBar           = v.findViewById(R.id.seekBar)
+        private val tvDuration: TextView       = v.findViewById(R.id.tvDuration)
 
         @SuppressLint("PrivateResource")
         fun bind(item: QuestionRes, position: Int) {
-            val duration = durationMap[item.audioUrl]
-
-            tvDuration.text =
-                if (duration != null)
-                    "0:00/${formatTime(duration)}"
-                else
-                    "0:00/0:00"
-
             tvQuestionNumber.text = "Question ${item.content}"
 
+            // Trích xuất thông tin player đã preload từ pool dựa vào url
+            val player = item.audioUrl?.let { playerProvider?.invoke(it) }
+            val duration = player?.duration ?: 0L
+            val current = player?.currentPosition ?: 0L
+
+            if (duration > 0) {
+                // Hiển thị chính xác tiến trình hiện tại / tổng thời lượng thực tế của file audio
+                seekBar.progress = (current * 100 / duration).toInt()
+                tvDuration.text = "${formatTime(current)}/${formatTime(duration)}"
+            } else {
+                seekBar.progress = 0
+                tvDuration.text = "0:00/0:00"
+            }
+
             ivPlay.setImageLevel(
-                if (position == currentPlayingPosition && isPlaying)
-                    LEVEL_PLAY else LEVEL_IDLE
+                if (position == currentPlayingPosition && isCurrentlyPlaying) LEVEL_PLAY
+                else LEVEL_IDLE
             )
 
             val options = item.optionRes ?: emptyList()
-
             fun bindOption(rb: RadioButton, index: Int) {
                 if (index < options.size) {
                     rb.visibility = View.VISIBLE
                     rb.text = options[index].content
                     rb.tag = options[index].id
-                } else rb.visibility = View.GONE
+                } else {
+                    rb.visibility = View.GONE
+                }
             }
-
             bindOption(ansA, 0)
             bindOption(ansB, 1)
             bindOption(ansC, 2)
 
             rgOptions.setOnCheckedChangeListener(null)
             rgOptions.clearCheck()
-
             selectedAnswers[item.id]?.let { selectedId ->
                 when (selectedId) {
                     ansA.tag -> ansA.isChecked = true
@@ -113,7 +138,6 @@ class ListeningAdapter(
                     ansC.tag -> ansC.isChecked = true
                 }
             }
-
             rgOptions.setOnCheckedChangeListener { _, checkedId ->
                 val rb = itemView.findViewById<RadioButton>(checkedId)
                 val optionId = rb.tag as Long
@@ -122,32 +146,23 @@ class ListeningAdapter(
             }
 
             ivPlay.setOnClickListener {
-                it.startAnimation(AnimationUtils.loadAnimation(itemView.context, androidx.appcompat.R.anim.abc_fade_in))
+                it.startAnimation(
+                    AnimationUtils.loadAnimation(itemView.context, androidx.appcompat.R.anim.abc_fade_in)
+                )
                 listener.onPlayClicked(position, item.audioUrl ?: "")
             }
         }
 
-        fun updatePlayState(isPlaying: Boolean) {
-            ivPlay.setImageLevel(
-                if (isPlaying) LEVEL_PLAY
-                else LEVEL_IDLE
-            )
-        }
-
         fun updateProgress(current: Long, duration: Long) {
             if (duration <= 0) return
-
-            val percent = (current * 100 / duration).toInt()
-            seekBar.progress = percent
+            seekBar.progress = (current * 100 / duration).toInt()
             tvDuration.text = "${formatTime(current)}/${formatTime(duration)}"
         }
     }
 
     @SuppressLint("DefaultLocale")
-    private fun formatTime(ms: Long): String {
+    fun formatTime(ms: Long): String {
         val totalSec = ms / 1000
-        val min = totalSec / 60
-        val sec = totalSec % 60
-        return String.format("%d:%02d", min, sec)
+        return String.format("%d:%02d", totalSec / 60, totalSec % 60)
     }
 }
