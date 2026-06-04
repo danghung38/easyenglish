@@ -7,19 +7,33 @@
     android:background="@color/color_bg_app"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTitle"
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/white"
-        android:fontFamily="@font/font_inter"
-        android:gravity="start|center_vertical"
-        android:paddingStart="20dp"
-        android:text="@string/txt_security"
-        android:textColor="@color/color_app"
-        android:textFontWeight="800"
-        android:textSize="24sp"
-        tools:ignore="RtlSymmetry,TextSizeCheck" />
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:padding="7dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center_vertical"
+            android:text="@string/txt_security"
+            android:textColor="@color/color_app"
+            android:textFontWeight="800"
+            android:textSize="24sp"
+            tools:ignore="RtlSymmetry,TextSizeCheck" />
+
+    </TableRow>
 
 
     <TableRow

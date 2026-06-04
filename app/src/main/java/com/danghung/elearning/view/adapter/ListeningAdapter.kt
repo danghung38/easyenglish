@@ -22,6 +22,9 @@ class ListeningAdapter(
         const val LEVEL_PLAY = 1
     }
 
+    private val durationMap = mutableMapOf<String, Long>()
+
+
     private var currentPlayingPosition = -1
     private var isPlaying = false
 
@@ -45,6 +48,11 @@ class ListeningAdapter(
         fun onPlayClicked(position: Int, audioUrl: String)
     }
 
+    fun updateDuration(audioUrl: String, duration: Long) {
+        durationMap[audioUrl] = duration
+        notifyDataSetChanged()
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<QuestionRes>) {
         questions.clear()
@@ -66,6 +74,13 @@ class ListeningAdapter(
 
         @SuppressLint("PrivateResource")
         fun bind(item: QuestionRes, position: Int) {
+            val duration = durationMap[item.audioUrl]
+
+            tvDuration.text =
+                if (duration != null)
+                    "0:00/${formatTime(duration)}"
+                else
+                    "0:00/0:00"
 
             tvQuestionNumber.text = "Question ${item.content}"
 
@@ -112,6 +127,13 @@ class ListeningAdapter(
             }
         }
 
+        fun updatePlayState(isPlaying: Boolean) {
+            ivPlay.setImageLevel(
+                if (isPlaying) LEVEL_PLAY
+                else LEVEL_IDLE
+            )
+        }
+
         fun updateProgress(current: Long, duration: Long) {
             if (duration <= 0) return
 
@@ -127,14 +149,5 @@ class ListeningAdapter(
         val min = totalSec / 60
         val sec = totalSec % 60
         return String.format("%d:%02d", min, sec)
-    }
-
-    fun updatePlayingState(position: Int, playing: Boolean) {
-        val old = currentPlayingPosition
-        currentPlayingPosition = position
-        isPlaying = playing
-
-        if (old != -1) notifyItemChanged(old)
-        if (position != -1) notifyItemChanged(position)
     }
 }

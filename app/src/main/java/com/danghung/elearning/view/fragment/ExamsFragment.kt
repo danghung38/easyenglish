@@ -43,7 +43,7 @@ class ExamsFragment : BaseFragment<FragmentExamsBinding, ExamsVM>(),
         }
 
         handleSearchExam()
-        setUpOnBackPressed()
+        setupBackPress()
     }
 
     private fun handleSearchExam() {
@@ -69,15 +69,6 @@ class ExamsFragment : BaseFragment<FragmentExamsBinding, ExamsVM>(),
                 adapter.updateData(page.items)
             }
         }
-    }
-
-    private fun setUpOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-
-                }
-            })
     }
 
 }

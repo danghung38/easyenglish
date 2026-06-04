@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.danghung.elearning.databinding.FragmentSecurityBinding
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_PROFILE
 import com.danghung.elearning.viewmodel.SecurityVM
 import com.danghung.elearning.viewmodel.SecurityVM.Companion.CHANGE_PASSWORD
@@ -24,6 +25,9 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding, SecurityVM>() {
     override fun initViews() {
         binding.btnLogout.setOnClickListener(this)
         binding.btnUpdatePassword.setOnClickListener(this)
+        binding.ivBack.setOnClickListener {
+            callBack.showFragment(MenuFragment.TAG, TYPE_PROFILE, false)
+        }
         setUpOnBackPressed()
     }
 

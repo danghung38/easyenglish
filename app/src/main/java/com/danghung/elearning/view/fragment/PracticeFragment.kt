@@ -44,6 +44,7 @@ class PracticeFragment : BaseFragment<FragmentPracticeBinding, PracticeVM>(), St
         binding.btnStartWriting.setOnClickListener(this)
         binding.btnStartSpeaking.setOnClickListener(this)
         binding.btnStartListening.setOnClickListener(this)
+        setUpNoOnBackPressed()
     }
 
     @SuppressLint("SetTextI18n")

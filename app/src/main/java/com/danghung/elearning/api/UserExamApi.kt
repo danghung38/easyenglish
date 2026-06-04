@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UserExamApi {
@@ -22,5 +23,11 @@ interface UserExamApi {
     fun createExam(
         @Header("Authorization") token: String,
         @Body req: UserExamReq
+    ): Call<ApiRes<UserExamRes>>
+
+    @GET("userexams/{userExamId}")
+    fun getUserExam(
+        @Header("Authorization") token: String,
+        @Path("userExamId") userExamId: Long
     ): Call<ApiRes<UserExamRes>>
 }

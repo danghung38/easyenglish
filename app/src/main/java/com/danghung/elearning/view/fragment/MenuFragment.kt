@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import com.danghung.elearning.R
 import com.danghung.elearning.databinding.FragmentMenuBinding
 import com.danghung.elearning.view.OnMainCallback
@@ -93,6 +94,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
             baseFragment.setAttachData(data)
             baseFragment.setOnCallBack(this)
             childFragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.fr_frg_main, baseFragment, tag)
                 .commit()
         } catch (e: Exception) {

@@ -46,6 +46,7 @@ class HistoryAdapter(
         private val tvDate: TextView = v.findViewById(R.id.tvDateExam)
         private val tvScore: TextView = v.findViewById(R.id.tvBandScore)
         private val btnDetail: TextView = v.findViewById(R.id.btnViewDetails)
+        private val lnBand: View = v.findViewById(R.id.lnBand)
 
         @SuppressLint("SetTextI18n", "DefaultLocale", "PrivateResource")
         fun bind(item: TestHistoryRes) {
@@ -60,6 +61,8 @@ class HistoryAdapter(
             } else {
                 item.score.toString()
             }
+
+            lnBand.visibility = if (item.isFullTest) View.INVISIBLE else View.VISIBLE
 
             btnDetail.setOnClickListener {
                 it.startAnimation(

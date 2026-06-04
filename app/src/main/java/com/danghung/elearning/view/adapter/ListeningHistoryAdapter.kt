@@ -25,6 +25,13 @@ class ListeningHistoryAdapter(
     private var currentPlayingPosition = -1
     private var isPlaying = false
 
+    private val durationMap = mutableMapOf<String, Long>()
+
+    fun updateDuration(audioUrl: String, duration: Long) {
+        durationMap[audioUrl] = duration
+        notifyDataSetChanged()
+    }
+
     interface OnListeningHistoryListener {
         fun onPlayClicked(position: Int, audioUrl: String)
     }
@@ -116,10 +123,23 @@ class ListeningHistoryAdapter(
                 listener.onPlayClicked(position, question.audioUrl ?: "")
             }
 
+            val duration = durationMap[question.audioUrl]
+
             seekBar.progress = 0
-            tvDuration.text = "0:00"
+
+            tvDuration.text =
+                if (duration != null)
+                    "0:00/${formatTime(duration)}"
+                else
+                    "0:00/0:00"
         }
 
+        fun updatePlayState(isPlaying: Boolean) {
+            ivPlay.setImageLevel(
+                if (isPlaying) LEVEL_PLAY
+                else LEVEL_IDLE
+            )
+        }
         fun updateProgress(current: Long, duration: Long) {
 
             if (duration <= 0) return
@@ -140,13 +160,4 @@ class ListeningHistoryAdapter(
         return String.format("%d:%02d", min, sec)
     }
 
-    fun updatePlayingState(position: Int, playing: Boolean) {
-
-        val old = currentPlayingPosition
-        currentPlayingPosition = position
-        isPlaying = playing
-
-        if (old != -1) notifyItemChanged(old)
-        if (position != -1) notifyItemChanged(position)
-    }
 }

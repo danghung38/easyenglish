@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import com.danghung.elearning.R
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -123,6 +125,39 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
     override fun onRetry() {
         callBack.showLoading()
         viewModel.retryLastApi()
+    }
+
+    protected fun setUpNoOnBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                }
+            })
+    }
+
+    protected fun setupBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    askForExitApp()
+                }
+            }
+        )
+    }
+
+    private fun askForExitApp() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Alert")
+            .setMessage("Close this app?")
+            .setPositiveButton("Close") { _, _ ->
+                requireActivity().finish()
+            }
+            .setNegativeButton("Don't") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
 }

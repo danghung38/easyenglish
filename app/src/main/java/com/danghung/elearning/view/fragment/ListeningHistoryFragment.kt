@@ -25,6 +25,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         val TAG: String = ListeningHistoryFragment::class.java.name
     }
 
+    private val audioDurations = mutableMapOf<String, Long>()
     private var userExamPartId: Long = 0L
     private lateinit var adapter: ListeningHistoryAdapter
     private lateinit var player: ExoPlayer
@@ -56,6 +57,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
                 MenuFragment.TAG, TYPE_LEARN, false
             )
         }
+        setUpNoOnBackPressed()
     }
 
     private fun setupPlayer() {
@@ -64,13 +66,20 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
             playWhenReady = false
             addListener(object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
-                    if (currentPlayingPosition != -1) {
-                        adapter.updatePlayingState(currentPlayingPosition, isPlaying)
-                    }
-                    if (isPlaying) startUpdating()
-                    else stopUpdating()
-                }
 
+                    startUpdating()
+
+                    val holder =
+                        binding.rvListeningHistory.findViewHolderForAdapterPosition(
+                            currentPlayingPosition
+                        ) as? ListeningHistoryAdapter.ListeningHistoryHolder
+
+                    holder?.updatePlayState(isPlaying)
+
+                    if (!isPlaying) {
+                        stopUpdating()
+                    }
+                }
                 override fun onPlaybackStateChanged(state: Int) {
                     if (state == Player.STATE_ENDED) {
                         pause()
@@ -87,11 +96,44 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
             GET_LISTENING_HISTORY -> {
                 val res = data as? List<UserAnswerRes> ?: emptyList()
                 adapter.submitList(res)
+
+                res.forEach {
+                    it.question?.audioUrl?.let { url ->
+                        preloadDuration(url)
+                    }
+                }
                 binding.rvListeningHistory.adapter = adapter
             }
         }
     }
 
+    private fun preloadDuration(url: String) {
+
+        if (audioDurations.containsKey(url)) return
+
+        val tempPlayer = ExoPlayer.Builder(requireContext()).build()
+
+        tempPlayer.setMediaItem(MediaItem.fromUri(url))
+
+        tempPlayer.addListener(object : Player.Listener {
+
+            override fun onPlaybackStateChanged(state: Int) {
+
+                if (state == Player.STATE_READY) {
+
+                    val duration = tempPlayer.duration
+
+                    audioDurations[url] = duration
+
+                    adapter.updateDuration(url, duration)
+
+                    tempPlayer.release()
+                }
+            }
+        })
+
+        tempPlayer.prepare()
+    }
 
     override fun onPlayClicked(position: Int, audioUrl: String) {
         playAudio(position, audioUrl)
@@ -111,7 +153,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
 
         player.setMediaItem(MediaItem.fromUri(url))
         player.prepare()
-        player.play()
+        player.playWhenReady = true
     }
 
     private fun startUpdating() {

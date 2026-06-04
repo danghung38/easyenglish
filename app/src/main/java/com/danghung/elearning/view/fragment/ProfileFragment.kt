@@ -38,7 +38,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileVM>() {
         initPickAvatar()
         binding.frAvatar.setOnClickListener(this)
         binding.btnUpdate.setOnClickListener(this)
-        setUpOnBackPressed()
+        setupBackPress()
     }
 
     override fun clickView(v: View) {
@@ -150,13 +150,5 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileVM>() {
         }
     }
 
-    private fun setUpOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-
-                }
-            })
-    }
 
 }

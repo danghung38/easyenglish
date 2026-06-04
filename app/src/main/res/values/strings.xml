@@ -79,6 +79,7 @@
     <string name="txt_duration">Duration: 60 minutes</string>
     <string name="txt_start_test">Start Test</string>
     <string name="txt_search_exams">Search Exams</string>
+    <string name="txt_search">Search any word, phrase, or sentence</string>
     <string name="txt_about_us">About Easy English</string>
     <string name="txt_des_about">Our mission is to make English accessible and fun for every student. We use smart tools to simplify complex rules, helping you master the language with confidence and ease.</string>
 
@@ -175,6 +176,13 @@
     <string name="txt_listening_history">History of listening tests</string>
     <string name="txt_speaking_history">History of speaking tests</string>
     <string name="txt_writing_history">History of writing tests</string>
+    <string name="txt_transcript">Transcript</string>
+    <string name="txt_feedback">Feedback</string>
+    <string name="txt_examiner_feedback">Examiner Feedback</string>
+    <string name="txt_criteria_scores">Criteria Scores</string>
+    <string name="txt_strengths">Strengths</string>
+    <string name="txt_improvements">Areas for Improvement</string>
     <string name="txt_explain"><![CDATA[Phân tích: Cấu trúc “tell somebody that + clause” - thông báo với ai đó về sự việc gì => Đáp án đúng là C “everyone”.]]></string>
     <string name="txt_correct">CORRECT</string>
+    <string name="txt_related_results">Related results</string>
 </resources>

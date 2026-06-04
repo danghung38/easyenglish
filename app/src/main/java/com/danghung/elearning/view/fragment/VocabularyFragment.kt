@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.danghung.elearning.api.res.VocabularyRes
 import com.danghung.elearning.databinding.FragmentVocabularyBinding
 import com.danghung.elearning.view.adapter.VocabularyAdapter
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.VocabularyVM
 import com.danghung.elearning.viewmodel.VocabularyVM.Companion.GET_VOCABULARY
 
@@ -29,8 +30,8 @@ class VocabularyFragment : BaseFragment<FragmentVocabularyBinding, VocabularyVM>
         binding.tvTitle.text = title
         callBack.showLoading()
         viewModel.getVocabularies(title)
-
-        binding.ivBack.setOnClickListener { callBack.showFragment(MenuFragment.TAG, null, false) }
+        setUpNoOnBackPressed()
+        binding.ivBack.setOnClickListener { callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false) }
     }
 
     @Suppress("UNCHECKED_CAST")

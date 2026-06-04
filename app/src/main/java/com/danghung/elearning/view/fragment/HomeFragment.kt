@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
     ): FragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
     override fun initViews() {
+        // search
+        binding.btnSearch.setOnClickListener(this)  // click icon search
         setupCreViewPager()
         binding.lnReading.setOnClickListener(this)
         binding.lnListening.setOnClickListener(this)
@@ -45,7 +48,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
     }
 
     override fun clickView(v: View) {
-        callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+        when (v.id) {
+            binding.btnSearch.id -> {
+                val query = binding.edtSearch.text.toString().trim()
+
+                if (query.isEmpty()) {
+                    notify("No empty search allowed!!")
+                    return
+                }
+
+                callBack.showFragment(TranslationFragment.TAG, query, true)
+            }
+            else -> callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+        }
     }
 
     private fun setupCreViewPager() {
@@ -67,6 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
         binding.dotCre.attachTo(binding.vpCre)
         setupCarousel()
         startAutoScroll()
+        setupBackPress()
     }
 
     private fun setupCarousel() {

@@ -20,7 +20,6 @@ import com.danghung.elearning.record.AudioPlayer
 import com.danghung.elearning.record.AudioRecorder
 import com.danghung.elearning.view.dialog.ErrorDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
-import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.SpeakingVM
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.EVALUATE_SPEAKING
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.GET_QUESTIONS_SPEAKING
@@ -272,7 +271,7 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
     }
 
     override fun onResult() {
-        callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        callBack.showFragment(SpeakingHistoryFragment.TAG, startData.userExamPartId, false)
     }
 
     private fun handleEvaluationResult(result: IELTSSpeakingRes) {

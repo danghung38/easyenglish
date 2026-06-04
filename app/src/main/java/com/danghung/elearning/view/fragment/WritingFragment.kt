@@ -18,7 +18,6 @@ import com.danghung.elearning.databinding.FragmentWritingBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.dialog.ErrorDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
-import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.WritingVM
 import com.danghung.elearning.viewmodel.WritingVM.Companion.EVALUATE_WRITING
 import com.danghung.elearning.viewmodel.WritingVM.Companion.GET_QUESTIONS_WRITING
@@ -176,7 +175,7 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
     }
 
     override fun onResult() {
-        callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        callBack.showFragment(WritingHistoryFragment.TAG, startData.userExamPartId, false)
     }
 
     private fun handleEvaluationResult(result: IELTSWritingRes) {
