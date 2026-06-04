@@ -17,7 +17,9 @@ import com.danghung.elearning.api.res.SubmitRLPartRes
 import com.danghung.elearning.databinding.FragmentListeningBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.adapter.ListeningAdapter
+import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.ListeningVM
 import com.danghung.elearning.viewmodel.ListeningVM.Companion.GET_QUESTIONS_LISTENING
@@ -125,10 +127,14 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
 
             SUBMIT_LISTENING -> {
                 data as SubmitRLPartRes
-                notify("Submit listening part successfully!")
-                var dialog = SubmitSuccessDialog(requireContext())
-                dialog.setCallBack(this)
-                dialog.show()
+                if (startData.userExamRes != null) {
+                    showFullTestProgressDialog()
+                } else {
+                    notify("Submit listening part successfully!")
+                    val dialog = SubmitSuccessDialog(requireContext())
+                    dialog.setCallBack(this)
+                    dialog.show()
+                }
             }
         }
     }
@@ -253,6 +259,40 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         job = null
     }
 
+    private fun showFullTestProgressDialog() {
+        val nextData = FullTestFlow.getNextStartData(startData)
+        if (nextData == null) {
+            notify("Full test completed!")
+            val dialog = SubmitSuccessDialog(requireContext())
+            dialog.setCallBack(this)
+            dialog.show()
+            return
+        }
+
+        val dialog = FullTestNextDialog(
+            requireContext(),
+            title = "Continue full test?",
+            nextLabel = "NEXT",
+            exitLabel = "EXIT"
+        )
+        dialog.setCallBack(object : FullTestNextDialog.OnFullTestNextCallBack {
+            override fun onNext() {
+                val nextTag = FullTestFlow.getFragmentTag(nextData.examPartRes?.skillType)
+                if (nextTag == null) {
+                    notify("Unsupported skill type")
+                    callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                    return
+                }
+                callBack.showFragment(nextTag, nextData, false)
+            }
+
+            override fun onExit() {
+                callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+            }
+        })
+        dialog.show()
+    }
+
 
     override fun onDestroy() {
         stopUpdating()
@@ -261,7 +301,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
     }
 
     override fun onResult() {
-        callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        callBack.showFragment(ListeningHistoryFragment.TAG, startData.userExamPartId, false)
     }
 
 }

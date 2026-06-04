@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.danghung.elearning.api.req.UserExamReq
 import com.danghung.elearning.api.res.ExamRes
+import com.danghung.elearning.api.res.UserExamRes
 import com.danghung.elearning.databinding.FragmentPracticeBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.dialog.StartTestDialog
@@ -95,8 +96,21 @@ class PracticeFragment : BaseFragment<FragmentPracticeBinding, PracticeVM>(), St
             }
 
             START_FULL -> {
-                //val exam = data as UserExamRes
-                notify("Function is under development, please try single skill practice")
+                val userExam = data as? UserExamRes ?: run {
+                    notify("Cannot start full test")
+                    return
+                }
+                val startData = FullTestFlow.buildFirstStartData(exam, userExam)
+                if (startData == null) {
+                    notify("No exam parts available")
+                    return
+                }
+                val nextTag = FullTestFlow.getFragmentTag(startData.examPartRes?.skillType)
+                if (nextTag == null) {
+                    notify("Unsupported skill type")
+                    return
+                }
+                callBack.showFragment(nextTag, startData, false)
             }
         }
     }

@@ -16,8 +16,11 @@ import com.danghung.elearning.api.res.IELTSWritingRes
 import com.danghung.elearning.api.res.QuestionRes
 import com.danghung.elearning.databinding.FragmentWritingBinding
 import com.danghung.elearning.model.StartPracticeData
+import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.ErrorDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.WritingVM
 import com.danghung.elearning.viewmodel.WritingVM.Companion.EVALUATE_WRITING
 import com.danghung.elearning.viewmodel.WritingVM.Companion.GET_QUESTIONS_WRITING
@@ -151,10 +154,14 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
 
             SUBMIT_WRITING -> {
                 callBack.hideLoading()
-                notify("Submit writing part successfully!")
-                var dialog = SubmitSuccessDialog(requireContext())
-                dialog.setCallBack(this)
-                dialog.show()
+                if (startData.userExamRes != null) {
+                    showFullTestProgressDialog()
+                } else {
+                    notify("Submit writing part successfully!")
+                    val dialog = SubmitSuccessDialog(requireContext())
+                    dialog.setCallBack(this)
+                    dialog.show()
+                }
             }
         }
     }
@@ -175,7 +182,11 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
     }
 
     override fun onResult() {
-        callBack.showFragment(WritingHistoryFragment.TAG, startData.userExamPartId, false)
+        if (startData.userExamRes != null) {
+            callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        } else {
+            callBack.showFragment(WritingHistoryFragment.TAG, startData.userExamPartId, false)
+        }
     }
 
     private fun handleEvaluationResult(result: IELTSWritingRes) {
@@ -211,6 +222,40 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
             backgroundTintList =
                 ContextCompat.getColorStateList(requireContext(), R.color.color_splash_des)
         }
+    }
+
+    private fun showFullTestProgressDialog() {
+        val nextData = FullTestFlow.getNextStartData(startData)
+        if (nextData == null) {
+            notify("Full test completed!")
+            val dialog = SubmitSuccessDialog(requireContext())
+            dialog.setCallBack(this)
+            dialog.show()
+            return
+        }
+
+        val dialog = FullTestNextDialog(
+            requireContext(),
+            title = "Continue full test?",
+            nextLabel = "NEXT",
+            exitLabel = "EXIT"
+        )
+        dialog.setCallBack(object : FullTestNextDialog.OnFullTestNextCallBack {
+            override fun onNext() {
+                val nextTag = FullTestFlow.getFragmentTag(nextData.examPartRes?.skillType)
+                if (nextTag == null) {
+                    notify("Unsupported skill type")
+                    callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                    return
+                }
+                callBack.showFragment(nextTag, nextData, false)
+            }
+
+            override fun onExit() {
+                callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+            }
+        })
+        dialog.show()
     }
 
     override fun onDestroy() {

@@ -18,8 +18,10 @@ import com.danghung.elearning.record.AndroidAudioPlayer
 import com.danghung.elearning.record.AndroidAudioRecorder
 import com.danghung.elearning.record.AudioPlayer
 import com.danghung.elearning.record.AudioRecorder
+import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.ErrorDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.viewmodel.SpeakingVM
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.EVALUATE_SPEAKING
 import com.danghung.elearning.viewmodel.SpeakingVM.Companion.GET_QUESTIONS_SPEAKING
@@ -255,11 +257,15 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
 
             SUBMIT_SPEAKING -> {
                 callBack.hideLoading()
-                notify("Submit speaking part successfully!")
                 if (tempFile.exists()) tempFile.delete()
-                var dialog = SubmitSuccessDialog(requireContext())
-                dialog.setCallBack(this)
-                dialog.show()
+                if (startData.userExamRes != null) {
+                    showFullTestProgressDialog()
+                } else {
+                    notify("Submit speaking part successfully!")
+                    val dialog = SubmitSuccessDialog(requireContext())
+                    dialog.setCallBack(this)
+                    dialog.show()
+                }
             }
         }
     }
@@ -271,7 +277,11 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
     }
 
     override fun onResult() {
-        callBack.showFragment(SpeakingHistoryFragment.TAG, startData.userExamPartId, false)
+        if (startData.userExamRes != null) {
+            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+        } else {
+            callBack.showFragment(SpeakingHistoryFragment.TAG, startData.userExamPartId, false)
+        }
     }
 
     private fun handleEvaluationResult(result: IELTSSpeakingRes) {
@@ -287,6 +297,40 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
         )
 
         viewModel.submitSpeaking(request)
+    }
+
+    private fun showFullTestProgressDialog() {
+        val nextData = FullTestFlow.getNextStartData(startData)
+        if (nextData == null) {
+            notify("Full test completed!")
+            val dialog = SubmitSuccessDialog(requireContext())
+            dialog.setCallBack(this)
+            dialog.show()
+            return
+        }
+
+        val dialog = FullTestNextDialog(
+            requireContext(),
+            title = "Continue full test?",
+            nextLabel = "NEXT",
+            exitLabel = "EXIT"
+        )
+        dialog.setCallBack(object : FullTestNextDialog.OnFullTestNextCallBack {
+            override fun onNext() {
+                val nextTag = FullTestFlow.getFragmentTag(nextData.examPartRes?.skillType)
+                if (nextTag == null) {
+                    notify("Unsupported skill type")
+                    callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                    return
+                }
+                callBack.showFragment(nextTag, nextData, false)
+            }
+
+            override fun onExit() {
+                callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+            }
+        })
+        dialog.show()
     }
 
     override fun onDestroy() {

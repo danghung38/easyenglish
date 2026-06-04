@@ -13,7 +13,9 @@ import com.danghung.elearning.api.res.SubmitRLPartRes
 import com.danghung.elearning.databinding.FragmentReadingBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.adapter.ReadingAdapter
+import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.ReadingVM
 import com.danghung.elearning.viewmodel.ReadingVM.Companion.GET_QUESTIONS_READING
@@ -79,16 +81,24 @@ class ReadingFragment : BaseFragment<FragmentReadingBinding, ReadingVM>(),
 
             SUBMIT_READING -> {
                 data as SubmitRLPartRes
-                notify("Submit reading part successfully!")
-                var dialog = SubmitSuccessDialog(requireContext())
-                dialog.setCallBack(this)
-                dialog.show()
+                if (startData.userExamRes != null) {
+                    showFullTestProgressDialog()
+                } else {
+                    notify("Submit reading part successfully!")
+                    val dialog = SubmitSuccessDialog(requireContext())
+                    dialog.setCallBack(this)
+                    dialog.show()
+                }
             }
         }
     }
 
     override fun onResult() {
-        callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        if (startData.userExamRes != null) {
+            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+        } else {
+            callBack.showFragment(ReadingHistoryFragment.TAG, startData.userExamPartId, false)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -131,6 +141,40 @@ class ReadingFragment : BaseFragment<FragmentReadingBinding, ReadingVM>(),
             backgroundTintList =
                 ContextCompat.getColorStateList(requireContext(), R.color.color_splash_des)
         }
+    }
+
+    private fun showFullTestProgressDialog() {
+        val nextData = FullTestFlow.getNextStartData(startData)
+        if (nextData == null) {
+            notify("Full test completed!")
+            val dialog = SubmitSuccessDialog(requireContext())
+            dialog.setCallBack(this)
+            dialog.show()
+            return
+        }
+
+        val dialog = FullTestNextDialog(
+            requireContext(),
+            title = "Continue full test?",
+            nextLabel = "NEXT",
+            exitLabel = "EXIT"
+        )
+        dialog.setCallBack(object : FullTestNextDialog.OnFullTestNextCallBack {
+            override fun onNext() {
+                val nextTag = FullTestFlow.getFragmentTag(nextData.examPartRes?.skillType)
+                if (nextTag == null) {
+                    notify("Unsupported skill type")
+                    callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                    return
+                }
+                callBack.showFragment(nextTag, nextData, false)
+            }
+
+            override fun onExit() {
+                callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+            }
+        })
+        dialog.show()
     }
 
     override fun onDestroy() {

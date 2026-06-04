@@ -99,7 +99,7 @@ class LearnFragment : BaseFragment<FragmentLearnBinding, LearnVM>(),
         //notify("Selected history: key=$key")
         if (key == KEY_FULL_TEST) {
             pendingFullTestName = item.examName
-            callBack.showLoading()
+            //callBack.showLoading()
             viewModel.getUserExam(item.userExamId)
             return
         }

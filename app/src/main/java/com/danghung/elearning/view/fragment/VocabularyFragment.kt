@@ -28,7 +28,7 @@ class VocabularyFragment : BaseFragment<FragmentVocabularyBinding, VocabularyVM>
     override fun initViews() {
         title = data as? String ?: ""
         binding.tvTitle.text = title
-        callBack.showLoading()
+        //callBack.showLoading()
         viewModel.getVocabularies(title)
         setUpNoOnBackPressed()
         binding.ivBack.setOnClickListener { callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false) }
