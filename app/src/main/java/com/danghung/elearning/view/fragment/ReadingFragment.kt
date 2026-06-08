@@ -13,6 +13,7 @@ import com.danghung.elearning.api.res.SubmitRLPartRes
 import com.danghung.elearning.databinding.FragmentReadingBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.adapter.ReadingAdapter
+import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
@@ -47,7 +48,8 @@ class ReadingFragment : BaseFragment<FragmentReadingBinding, ReadingVM>(),
         }
 
         viewModel.getQuestions(startData.examPartRes?.id ?: 0)
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
 
 
         viewModel.formattedTime.observe(viewLifecycleOwner) { time ->
@@ -57,6 +59,27 @@ class ReadingFragment : BaseFragment<FragmentReadingBinding, ReadingVM>(),
             }
         }
         binding.btnSubmit.setOnClickListener(this)
+        onBack()
+    }
+
+    private fun onBack() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val dialog = ExitDialog(requireContext())
+                    dialog.setCallBack(object : ExitDialog.OnExitCallBack {
+                        override fun onExit() {
+                            viewModel.stopCountdown()
+                            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+
+                            // Hoặc nếu muốn pop fragment thông thường:
+                            // parentFragmentManager.popBackStack()
+                        }
+                    })
+
+                    dialog.show()
+                }
+            })
     }
 
     private fun onTimeUp() {
@@ -130,7 +153,8 @@ class ReadingFragment : BaseFragment<FragmentReadingBinding, ReadingVM>(),
         viewModel.stopCountdown()
         binding.tvTime.text = "00:00"
         disableSubmitButton()
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.submit(startData.userExamPartId)
     }
 

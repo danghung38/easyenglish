@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/rootView"
     android:layout_height="match_parent"
     android:background="@color/color_bg_app"
     android:orientation="vertical">
@@ -341,5 +342,15 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
-</LinearLayout>
+    <ImageView
+        android:id="@+id/btnChatbot"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:elevation="8dp"
+        android:src="@drawable/ic_chatbot"
+        tools:ignore="ContentDescription" />
+</FrameLayout>

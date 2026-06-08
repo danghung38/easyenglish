@@ -22,4 +22,13 @@
         android:focusable="true"
         android:visibility="gone" />
 
+    <FrameLayout
+        android:id="@+id/frLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:focusable="true"
+        android:visibility="gone"/>
+
 </FrameLayout>

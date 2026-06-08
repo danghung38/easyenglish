@@ -18,6 +18,7 @@ import com.danghung.elearning.databinding.FragmentWritingBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.ErrorDialog
+import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
@@ -48,12 +49,14 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
     override fun initViews() {
         startData = data as StartPracticeData
 
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.getQuestions(startData.examPartRes?.id ?: 0)
 
         startCountdown()
         binding.btnSubmit.setOnClickListener(this)
         setupWordCounter()
+        onBack()
     }
     private fun startCountdown() {
         viewModel.startCountdown(duration)
@@ -129,6 +132,26 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
             duration = duration
         )
     }
+    private fun onBack() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val dialog = ExitDialog(requireContext())
+                    dialog.setCallBack(object : ExitDialog.OnExitCallBack {
+                        override fun onExit() {
+                            viewModel.stopCountdown()
+                            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+
+                            // Hoặc nếu muốn pop fragment thông thường:
+                            // parentFragmentManager.popBackStack()
+                        }
+                    })
+
+                    dialog.show()
+                }
+            })
+    }
+
 
     // API
     @Suppress("UNCHECKED_CAST")
@@ -136,7 +159,8 @@ class WritingFragment : BaseFragment<FragmentWritingBinding, WritingVM>(), Submi
         when (key) {
 
             GET_QUESTIONS_WRITING -> {
-                callBack.hideLoading()
+                //callBack.hideLoading()
+                callBack.hideLoad()
                 val questions = data as List<QuestionRes>
                 val firstQuestion = questions.firstOrNull()
                 currentQuestionId = firstQuestion?.id ?: 0

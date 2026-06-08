@@ -19,6 +19,7 @@ import com.danghung.elearning.OnAPICallBack
 import com.danghung.elearning.api.res.ApiErrorRes
 import com.danghung.elearning.view.OnMainCallback
 import com.danghung.elearning.view.dialog.ErrorDialog
+import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.viewmodel.BaseViewModel
 import com.danghung.elearning.viewmodel.LoginVM.Companion.KEY_TOKEN
 
@@ -87,17 +88,19 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
 
     override fun apiSuccess(key: String, data: Any?) {
         callBack.hideLoading()
+        callBack.hideLoad()
         handleApiSuccess(key, data)
     }
 
     override fun apiError(key: String, code: Int, data: Any?) {
         callBack.hideLoading()
+        callBack.hideLoad()
         if (code == 401) {
             CommonUtils.getInstance().clearPref(KEY_TOKEN)
             notify(R.string.txt_err_expired_login)
             callBack.showFragment(LoginFragment.TAG, null, false)
             return
-        }else if(code == 999){
+        }else if(code == 500){
             notify(R.string.txt_server_error)
             var dialog = ErrorDialog(requireContext())
             dialog.setCallBack(this)
@@ -161,3 +164,4 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
     }
 
 }
+

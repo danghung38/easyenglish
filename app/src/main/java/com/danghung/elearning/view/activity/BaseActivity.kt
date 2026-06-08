@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -53,15 +54,27 @@ abstract class BaseActivity<V : ViewBinding, M : ViewModel> : AppCompatActivity(
     private fun setUpStatusBar() {
         val root = findViewById<View>(R.id.ln_main)
 
+        // Cho phép giao diện tràn viền (cả trên lẫn dưới)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        // Cấu hình màu sắc và độ sáng tối cho các thanh hệ thống
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white) // Thêm dòng này nếu muốn thanh dưới màu trắng
+
+        val controller = WindowInsetsControllerCompat(window, root)
+        controller.isAppearanceLightStatusBars = true
+        controller.isAppearanceLightNavigationBars = true // Giúp các icon nút bấm dưới cùng biến thành màu tối trên nền trắng
+
+        // Lắng nghe khoảng trống hệ thống để tự động đẩy giao diện vào trong
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
-            val top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            v.setPadding(0, top, 0, 0)
+            // Lấy khoảng trống của tất cả thanh hệ thống (gồm cả Status bar và Navigation bar)
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Đẩy phần trên (top) theo status bar và phần dưới (bottom) theo navigation bar
+            v.setPadding(0, systemBarsInsets.top, 0, systemBarsInsets.bottom)
+
             insets
         }
-        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-        WindowInsetsControllerCompat(window, root).isAppearanceLightStatusBars = true
     }
 
     private fun askForExitApp() {
@@ -128,6 +141,14 @@ abstract class BaseActivity<V : ViewBinding, M : ViewModel> : AppCompatActivity(
 
     override fun hideLoading() {
         binding.root.findViewById<View>(R.id.viewLoading)?.visibility = View.GONE
+    }
+
+    override fun hideLoad() {
+        binding.root.findViewById<FrameLayout>(R.id.frLoading)?.visibility = View.GONE
+    }
+
+    override fun showLoad() {
+        binding.root.findViewById<FrameLayout>(R.id.frLoading)?.visibility = View.VISIBLE
     }
 
 

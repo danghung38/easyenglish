@@ -5,7 +5,9 @@ import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DimenRes
@@ -17,6 +19,7 @@ import com.danghung.elearning.model.CreItem
 import com.danghung.elearning.view.adapter.CreAdapter
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.viewmodel.CommomVM
+import kotlin.math.abs
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
@@ -45,6 +48,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
         binding.lnListening.setOnClickListener(this)
         binding.lnWriting.setOnClickListener(this)
         binding.lnSpeaking.setOnClickListener(this)
+
+        // Gọi hàm setup cho Chatbot
+        setupChatbotFloatingButton()
     }
 
     override fun clickView(v: View) {
@@ -61,6 +67,85 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
             }
             else -> callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
         }
+    }
+
+    private fun setupChatbotFloatingButton() {
+        var dX = 0f
+        var dY = 0f
+        var initialX = 0f
+        var initialY = 0f
+        var isMoveAction = false
+
+        // Lấy khoảng cách tối thiểu để hệ thống coi là hành động "Kéo" (nhỏ hơn mức này là Click)
+        val touchSlop = ViewConfiguration.get(requireContext()).scaledTouchSlop
+
+        binding.btnChatbot.setOnTouchListener { view, event ->
+            // Lấy kích thước của layout cha (FrameLayout) để giới hạn chatbot không bị kéo ra ngoài màn hình
+            val parentView = binding.rootView // id của FrameLayout gốc
+            val parentWidth = parentView.width
+            val parentHeight = parentView.height
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    dX = view.x - event.rawX
+                    dY = view.y - event.rawY
+                    initialX = view.x
+                    initialY = view.y
+                    isMoveAction = false
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    var newX = event.rawX + dX
+                    var newY = event.rawY + dY
+
+                    // Giới hạn không cho kéo chatbot vượt quá biên màn hình (trái, phải, trên, dưới)
+                    newX = newX.coerceIn(0f, (parentWidth - view.width).toFloat())
+                    newY = newY.coerceIn(0f, (parentHeight - view.height).toFloat())
+
+                    view.x = newX
+                    view.y = newY
+
+                    // Nếu khoảng cách dịch chuyển lớn hơn touchSlop thì xác định là đang kéo (Drag)
+                    if (abs(view.x - initialX) > touchSlop || abs(view.y - initialY) > touchSlop) {
+                        isMoveAction = true
+                    }
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (!isMoveAction) {
+                        // Nếu không phải kéo kéo thả thả -> Đây là một cú CLICK
+                        // Gọi hàm chuyển sang ChatbotFragment của bạn ở đây
+                        goToChatbotFragment()
+                    } else {
+                        // Nếu là hành động kéo thả -> Xử lý tự động hít về mép trái hoặc phải gần nhất
+                        val screenCenterX = parentWidth / 2
+                        val currentX = view.x
+                        val viewWidth = view.width
+
+                        // Xác định vị trí đích (Hít vào mép trái cách 20dp hoặc mép phải cách 20dp)
+                        val marginPx = resources.getDimensionPixelSize(R.dimen.viewpager_current_item_horizontal_margin) // tận dụng tạm margin định nghĩa sẵn hoặc điền số px cụ thể
+                        val targetX = if (currentX + viewWidth / 2 < screenCenterX) {
+                            0f + 30f // Cách mép trái một chút
+                        } else {
+                            (parentWidth - viewWidth).toFloat() - 30f // Cách mép phải một chút
+                        }
+
+                        // Thực hiện hiệu ứng mượt mà (Animation) di chuyển về mép
+                        view.animate()
+                            .x(targetX)
+                            .setDuration(250) // Thời gian hít (250 mili giây)
+                            .start()
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun goToChatbotFragment() {
+        // Xử lý chuyển fragment của bạn tại đây, ví dụ:
+        callBack.showFragment(ChatbotFragment.TAG, null, true)
     }
 
     private fun setupCreViewPager() {

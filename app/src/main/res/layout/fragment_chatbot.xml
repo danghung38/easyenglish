@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"
+            app:tint="#1E293B"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgBotAvatar"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_chatbot"
+            app:shapeAppearanceOverlay="@style/CircleImage" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_inter"
+                android:text="Easy English AI"
+                android:textColor="#1E293B"
+                android:textFontWeight="600"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="Online • Trợ lý học tập"
+                android:textColor="#3BF63B"
+                android:textFontWeight="500"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvChat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        tools:listitem="@layout/item_chat_bot" />
+
+    <LinearLayout
+        android:id="@+id/layoutBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp">
+
+        <EditText
+            android:id="@+id/edtMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="50dp"
+            android:background="@drawable/bg_search2"
+            android:fontFamily="sans-serif-light"
+            android:hint="Hỏi Easy English về ngữ pháp, từ vựng..."
+            android:inputType="textMultiLine"
+            android:minLines="1"
+            android:maxLines="4"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:textColor="#1E293B"
+            android:textColorHint="#94A3B8"
+            android:textSize="14sp"
+            android:scrollbars="vertical"
+            tools:ignore="Autofill" />
+
+        <ImageView
+            android:id="@+id/btnSend"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:paddingVertical="12dp"
+            android:paddingStart="4dp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_btn_send"
+            android:src="@drawable/ic_send"
+            app:borderWidth="0dp"
+            app:fabCustomSize="48dp"
+            app:tint="@color/white"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+</LinearLayout>

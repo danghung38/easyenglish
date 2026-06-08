@@ -34,7 +34,8 @@ class SpeakingHistoryFragment : BaseFragment<FragmentSpeakingHistoryBinding, Spe
         setUpNoOnBackPressed()
         userExamPartId = data as? Long ?: 0L
 
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.getSpeakingHistory(userExamPartId)
 
         binding.ivBack.setOnClickListener {

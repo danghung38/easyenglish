@@ -9,4 +9,8 @@ interface OnMainCallback {
     fun hideLoading(){
 
     }
+
+    fun showLoad(){}
+
+    fun hideLoad(){}
 }

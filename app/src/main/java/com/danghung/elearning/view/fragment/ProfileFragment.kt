@@ -32,7 +32,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, ProfileVM>() {
     override fun initViews() {
         setupSpinner()
         binding.trSecurity.setOnClickListener(this)
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.getMyInfo()
 
         initPickAvatar()

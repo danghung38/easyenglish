@@ -43,9 +43,6 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
 
     private var progressJob: Job? = null
 
-    // -----------------------------------------------------------------------
-    // BaseFragment
-    // -----------------------------------------------------------------------
 
     override fun getClassVM(): Class<ListeningVM> = ListeningVM::class.java
 
@@ -68,7 +65,8 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         binding.rvListeningHistory.itemAnimator = null
 
         // Hiện loading ngay từ đầu, ẩn tạm danh sách câu hỏi lịch sử đi để tránh nhấp nháy UI
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         binding.rvListeningHistory.visibility = View.INVISIBLE
 
         viewModel.getListeningHistory(userExamPartId)
@@ -79,9 +77,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         setUpNoOnBackPressed()
     }
 
-    // -----------------------------------------------------------------------
     // Preload — prepare() toàn bộ player ngay khi có dữ liệu
-    // -----------------------------------------------------------------------
 
     private fun preloadAllPlayers(items: List<UserAnswerRes>) {
         val urls = items.mapNotNull { it.question?.audioUrl }.distinct()
@@ -145,9 +141,6 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         }
     }
 
-    // -----------------------------------------------------------------------
-    // API
-    // -----------------------------------------------------------------------
 
     @Suppress("UNCHECKED_CAST")
     override fun handleApiSuccess(key: String, data: Any?) {
@@ -166,10 +159,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         }
     }
 
-    // -----------------------------------------------------------------------
     // Playback
-    // -----------------------------------------------------------------------
-
     override fun onPlayClicked(position: Int, audioUrl: String) {
         if (audioUrl.isEmpty()) return
         val target = playerPool[audioUrl] ?: return
@@ -237,10 +227,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         }
     }
 
-    // -----------------------------------------------------------------------
     // Progress
-    // -----------------------------------------------------------------------
-
     private fun startProgressUpdating(position: Int, p: ExoPlayer) {
         stopProgressUpdating()
         progressJob = viewLifecycleOwner.lifecycleScope.launch {
@@ -263,9 +250,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         progressJob = null
     }
 
-    // -----------------------------------------------------------------------
     // Lifecycle
-    // -----------------------------------------------------------------------
 
     override fun onDestroy() {
         stopProgressUpdating()

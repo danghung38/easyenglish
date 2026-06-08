@@ -54,10 +54,11 @@ class LearnFragment : BaseFragment<FragmentLearnBinding, LearnVM>(),
         }
 
         // CALL API SONG SONG
-        callBack.showLoading()
+        //callBack.showLoading()
+        callBack.showLoad()
         viewModel.getHistory()
 
-        callBack.showLoading()
+        //callBack.showLoading()
         viewModel.getTopics()
 
         setupBackPress()
@@ -68,15 +69,33 @@ class LearnFragment : BaseFragment<FragmentLearnBinding, LearnVM>(),
     override fun handleApiSuccess(key: String, data: Any?) {
         when (key) {
             GET_HISTORY -> {
-                val list = data as List<TestHistoryRes>
-                historyAdapter = HistoryAdapter(list, this)
-                binding.rvHistoryExams.adapter = historyAdapter
+                val list = data as? List<TestHistoryRes> ?: emptyList()
+
+                if (list.isEmpty()) {
+                    binding.rvHistoryExams.visibility = android.view.View.GONE
+                    binding.tvEmptyHistory.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.rvHistoryExams.visibility = android.view.View.VISIBLE
+                    binding.tvEmptyHistory.visibility = android.view.View.GONE
+
+                    historyAdapter = HistoryAdapter(list, this)
+                    binding.rvHistoryExams.adapter = historyAdapter
+                }
             }
 
             GET_TOPICS -> {
-                val topics = data as List<TopicRes>
-                topicAdapter = TopicAdapter(topics, this)
-                binding.rvVocabulary.adapter = topicAdapter
+                val topics = data as? List<TopicRes> ?: emptyList()
+
+                if (topics.isEmpty()) {
+                    binding.rvVocabulary.visibility = android.view.View.GONE
+                    binding.tvEmptyVocabulary.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.rvVocabulary.visibility = android.view.View.VISIBLE
+                    binding.tvEmptyVocabulary.visibility = android.view.View.GONE
+
+                    topicAdapter = TopicAdapter(topics, this)
+                    binding.rvVocabulary.adapter = topicAdapter
+                }
             }
 
             GET_USER_EXAM -> {

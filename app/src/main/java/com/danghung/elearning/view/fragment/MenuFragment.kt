@@ -86,17 +86,55 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
         showFragmentInMenu(tag, null)
     }
 
+//    fun showFragmentInMenu(tag: String, data: Any?) {
+//        try {
+//            val clazz = Class.forName(tag)
+//            val constructor = clazz.getConstructor()
+//            val baseFragment = constructor.newInstance() as BaseFragment<*, *>
+//            baseFragment.setAttachData(data)
+//            baseFragment.setOnCallBack(this)
+//            childFragmentManager.beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//                .replace(R.id.fr_frg_main, baseFragment, tag)
+//                .commit()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
+
     fun showFragmentInMenu(tag: String, data: Any?) {
         try {
-            val clazz = Class.forName(tag)
-            val constructor = clazz.getConstructor()
-            val baseFragment = constructor.newInstance() as BaseFragment<*, *>
-            baseFragment.setAttachData(data)
-            baseFragment.setOnCallBack(this)
-            childFragmentManager.beginTransaction()
+            val fragmentManager = childFragmentManager
+            // 1. Tìm xem fragment này đã từng được tạo chưa
+            var baseFragment = fragmentManager.findFragmentByTag(tag) as? BaseFragment<*, *>
+
+            // 2. Nếu fragment này đang hiển thị sẵn rồi thì không làm gì cả để tránh nháy
+            if (baseFragment != null && baseFragment.isVisible) {
+                return
+            }
+
+            val transaction = fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.fr_frg_main, baseFragment, tag)
-                .commit()
+
+            // 3. Nếu chưa tồn tại thì mới khởi tạo mới
+            if (baseFragment == null) {
+                val clazz = Class.forName(tag)
+                val constructor = clazz.getConstructor()
+                baseFragment = constructor.newInstance() as BaseFragment<*, *>
+                baseFragment.setAttachData(data)
+                baseFragment.setOnCallBack(this)
+
+                // Dùng replace nhưng chỉ chạy lần đầu cho tag này
+                transaction.replace(R.id.fr_frg_main, baseFragment, tag)
+            } else {
+                // Nếu đã tồn tại rồi nhưng đang bị ẩn (do tab khác đè lên), ta set lại data và show nó lên
+                baseFragment.setAttachData(data)
+                // Nếu bạn dùng cơ chế ẩn/hiển thị (show/hide) thì dùng transaction.show(baseFragment)
+                // Còn nếu vẫn dùng replace thông thường thì dòng dưới đây đảm bảo nạp lại fragment cũ
+                transaction.replace(R.id.fr_frg_main, baseFragment, tag)
+            }
+
+            transaction.commit()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -112,6 +150,14 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
 
     override fun hideLoading() {
         callBack.hideLoading()
+    }
+
+    override fun showLoad() {
+        callBack.showLoad()
+    }
+
+    override fun hideLoad() {
+        callBack.hideLoad()
     }
 
 }

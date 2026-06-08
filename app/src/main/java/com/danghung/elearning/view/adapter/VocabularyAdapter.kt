@@ -88,46 +88,57 @@ class VocabularyAdapter(
 
         fun flipCard() {
             val scale = itemView.resources.displayMetrics.density
-            cardFront.cameraDistance = 4000 * scale
-            cardBack.cameraDistance = 4000 * scale
-
-            val flipOut = android.animation.AnimatorInflater.loadAnimator(
-                context, R.animator.flip_out
-            )
-
-            val flipIn = android.animation.AnimatorInflater.loadAnimator(
-                context, R.animator.flip_in
-            )
+            cardFront.cameraDistance = 8000 * scale
+            cardBack.cameraDistance = 8000 * scale
 
             if (isFront) {
+                val flipOut = android.animation.AnimatorInflater.loadAnimator(context, R.animator.flip_out)
+                val flipIn = android.animation.AnimatorInflater.loadAnimator(context, R.animator.flip_in)
+
+                // Set hardware layer khi animate để tránh bóng đen
+                cardFront.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                cardBack.setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
                 flipOut.setTarget(cardFront)
                 flipOut.start()
-
                 flipOut.addListener(object : android.animation.AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: android.animation.Animator) {
-
                         cardFront.visibility = View.GONE
                         cardBack.visibility = View.VISIBLE
-
+                        cardBack.rotationY = -90f
                         flipIn.setTarget(cardBack)
                         flipIn.start()
+                        flipIn.addListener(object : android.animation.AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: android.animation.Animator) {
+                                // Trả về NONE sau khi xong để tránh memory leak
+                                cardFront.setLayerType(View.LAYER_TYPE_NONE, null)
+                                cardBack.setLayerType(View.LAYER_TYPE_NONE, null)
+                            }
+                        })
                     }
                 })
-
             } else {
+                val flipOut = android.animation.AnimatorInflater.loadAnimator(context, R.animator.flip_out)
+                val flipIn = android.animation.AnimatorInflater.loadAnimator(context, R.animator.flip_in)
+
+                cardFront.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+                cardBack.setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
                 flipOut.setTarget(cardBack)
                 flipOut.start()
-
                 flipOut.addListener(object : android.animation.AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: android.animation.Animator) {
-
                         cardBack.visibility = View.GONE
                         cardFront.visibility = View.VISIBLE
-
+                        cardFront.rotationY = -90f
                         flipIn.setTarget(cardFront)
                         flipIn.start()
+                        flipIn.addListener(object : android.animation.AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: android.animation.Animator) {
+                                cardFront.setLayerType(View.LAYER_TYPE_NONE, null)
+                                cardBack.setLayerType(View.LAYER_TYPE_NONE, null)
+                            }
+                        })
                     }
                 })
             }

@@ -30,7 +30,8 @@ class WritingHistoryFragment : BaseFragment<FragmentWritingHistoryBinding, Writi
     override fun initViews() {
         setUpNoOnBackPressed()
         userExamPartId = data as? Long ?: 0L
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.getWritingHistory(userExamPartId)
 
         binding.ivBack.setOnClickListener {

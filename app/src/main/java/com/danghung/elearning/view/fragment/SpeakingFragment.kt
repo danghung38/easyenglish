@@ -20,6 +20,7 @@ import com.danghung.elearning.record.AudioPlayer
 import com.danghung.elearning.record.AudioRecorder
 import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.ErrorDialog
+import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
 import com.danghung.elearning.viewmodel.SpeakingVM
@@ -57,7 +58,8 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
     override fun initViews() {
         startData = data as StartPracticeData
         setupRecording()
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.getQuestions(startData.examPartRes?.id ?: 0)
 
         startCountdown()
@@ -66,6 +68,60 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
         binding.btnStopRecording.setOnClickListener(this)
         binding.btnSubmitSpeaking.setOnClickListener(this)
         binding.ivRecordAnswer.setOnClickListener(this)
+
+        onBack()
+    }
+
+    private fun onBack() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val dialog = ExitDialog(requireContext())
+                    dialog.setCallBack(object : ExitDialog.OnExitCallBack {
+                        override fun onExit() {
+                            // 1. Dừng đếm ngược thời gian làm bài
+                            viewModel.stopCountdown()
+
+                            // 2. Tắt âm thanh phát nếu đang nghe lại ghi âm
+                            if (isPlaying) {
+                                try {
+                                    player.stop()
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                                isPlaying = false
+                            }
+
+                            // 3. Sử dụng Coroutine Scope của Fragment để dừng ghi âm an toàn (nếu đang thu)
+                            if (isRecording) {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    try {
+                                        recorder.stop()
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                    isRecording = false
+
+                                    // Sau khi hạ hết các cờ phần cứng ở background, quay về Main thread để chuyển màn
+                                    withContext(Dispatchers.Main) {
+                                        // Xóa file tạm nếu cần thiết khi thoát ngang bài làm
+                                        if (tempFile.exists()) tempFile.delete()
+
+                                        // Điều hướng thoát ra màn hình Menu
+                                        callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                                    }
+                                }
+                            } else {
+                                // Trường hợp không ghi âm, chỉ cần xóa file tạm và thoát ngay
+                                if (tempFile.exists()) tempFile.delete()
+                                callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
+                            }
+                        }
+                    })
+
+                    dialog.show()
+                }
+            })
     }
 
     private fun setupRecording() {
@@ -247,7 +303,8 @@ class SpeakingFragment : BaseFragment<FragmentSpeakingBinding, SpeakingVM>(),
                 binding.tvSpeakingQuestion.text = Html.fromHtml(
                     firstQuestion?.content ?: "No question available", Html.FROM_HTML_MODE_COMPACT
                 )
-                callBack.hideLoading()
+                //callBack.hideLoading()
+                callBack.hideLoad()
             }
 
             EVALUATE_SPEAKING -> {

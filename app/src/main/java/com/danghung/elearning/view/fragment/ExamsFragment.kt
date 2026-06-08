@@ -36,7 +36,8 @@ class ExamsFragment : BaseFragment<FragmentExamsBinding, ExamsVM>(),
         }
 
         if (viewModel.examList == null) {
-            callBack.showLoading()
+            callBack.showLoad()
+            //callBack.showLoading()
             viewModel.getExamList()
         } else {
             adapter.updateData(viewModel.examList!!)

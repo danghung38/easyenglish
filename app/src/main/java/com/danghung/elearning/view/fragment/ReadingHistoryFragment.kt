@@ -28,7 +28,9 @@ class ReadingHistoryFragment : BaseFragment<FragmentReadingHistoryBinding, Readi
 
     override fun initViews() {
         userExamPartId = data as? Long ?: 0L
-        callBack.showLoading()
+
+        callBack.showLoad()
+        // callBack.showLoading()
         viewModel.getReadingHistory(userExamPartId)
 
         binding.ivBack.setOnClickListener {

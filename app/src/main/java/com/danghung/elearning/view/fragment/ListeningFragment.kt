@@ -20,6 +20,7 @@ import com.danghung.elearning.api.res.SubmitRLPartRes
 import com.danghung.elearning.databinding.FragmentListeningBinding
 import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.adapter.ListeningAdapter
+import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.view.dialog.FullTestNextDialog
 import com.danghung.elearning.view.dialog.SubmitSuccessDialog
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
@@ -50,9 +51,6 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
 
     private var progressJob: Job? = null
 
-    // -----------------------------------------------------------------------
-    // BaseFragment
-    // -----------------------------------------------------------------------
 
     override fun getClassVM(): Class<ListeningVM> = ListeningVM::class.java
 
@@ -74,6 +72,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         binding.rvListening.itemAnimator = null
 
         callBack.showLoading()
+        //callBack.showLoad()
         binding.rvListening.visibility = View.INVISIBLE
 
         viewModel.getQuestions(startData.examPartRes?.id ?: 0)
@@ -84,12 +83,32 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         }
 
         binding.btnSubmit.setOnClickListener(this)
+
+        onBack()
     }
 
-    // -----------------------------------------------------------------------
-    // Preload — tạo, prepare() và chờ toàn bộ player READY mới vào bài học
-    // -----------------------------------------------------------------------
+    private fun onBack() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val dialog = ExitDialog(requireContext())
+                    dialog.setCallBack(object : ExitDialog.OnExitCallBack {
+                        override fun onExit() {
+                            stopAllPlayback()
+                            viewModel.stopCountdown()
+                            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
 
+                            // Hoặc nếu muốn pop fragment thông thường:
+                            // parentFragmentManager.popBackStack()
+                        }
+                    })
+
+                    dialog.show()
+                }
+            })
+    }
+
+    // Preload — tạo, prepare() và chờ toàn bộ player READY mới vào bài học
     private fun preloadAllPlayers(questions: List<QuestionRes>) {
         val urls = questions.mapNotNull { it.audioUrl }.distinct()
         if (urls.isEmpty()) {
@@ -149,9 +168,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         }
     }
 
-    // -----------------------------------------------------------------------
     // Playback
-    // -----------------------------------------------------------------------
 
     override fun onPlayClicked(position: Int, audioUrl: String) {
         if (audioUrl.isEmpty()) return
@@ -171,8 +188,6 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
             }
             return
         }
-
-        // ── Track khác: dừng cũ ──
         activePlayer?.pause()
         adapter.setPlayingState(activePosition, false)
         stopProgressUpdating()
@@ -219,10 +234,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         }
     }
 
-    // -----------------------------------------------------------------------
     // Progress
-    // -----------------------------------------------------------------------
-
     private fun startProgressUpdating(position: Int, p: ExoPlayer) {
         stopProgressUpdating()
         progressJob = viewLifecycleOwner.lifecycleScope.launch {
@@ -245,10 +257,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         progressJob = null
     }
 
-    // -----------------------------------------------------------------------
     // Stop all
-    // -----------------------------------------------------------------------
-
     private fun stopAllPlayback() {
         stopProgressUpdating()
         activePlayer?.pause()
@@ -257,10 +266,6 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         activeUrl      = ""
         activePosition = -1
     }
-
-    // -----------------------------------------------------------------------
-    // API
-    // -----------------------------------------------------------------------
 
     override fun handleApiSuccess(key: String, data: Any?) {
         when (key) {
@@ -288,18 +293,11 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         }
     }
 
-    // -----------------------------------------------------------------------
     // Answer
-    // -----------------------------------------------------------------------
-
     override fun onAnswerSelected(answer: AnswerRLPartReq) {
         viewModel.addOrUpdateAnswer(answer)
         binding.tvProcess.text = "${viewModel.getAnsweredCount()}/${adapter.itemCount}"
     }
-
-    // -----------------------------------------------------------------------
-    // Submit
-    // -----------------------------------------------------------------------
 
     override fun clickView(v: View) {
         when (v.id) {
@@ -315,7 +313,8 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         viewModel.stopCountdown()
         binding.tvTime.text = "00:00"
         disableSubmitButton()
-        callBack.showLoading()
+        callBack.showLoad()
+        //callBack.showLoading()
         viewModel.submit(startData.userExamPartId)
     }
 
@@ -337,10 +336,7 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         }
     }
 
-    // -----------------------------------------------------------------------
     // Full test
-    // -----------------------------------------------------------------------
-
     private fun showFullTestProgressDialog() {
         val nextData = FullTestFlow.getNextStartData(startData)
         if (nextData == null) {
@@ -373,9 +369,6 @@ class ListeningFragment : BaseFragment<FragmentListeningBinding, ListeningVM>(),
         dialog.show()
     }
 
-    // -----------------------------------------------------------------------
-    // Lifecycle
-    // -----------------------------------------------------------------------
 
     override fun onDestroy() {
         stopProgressUpdating()
