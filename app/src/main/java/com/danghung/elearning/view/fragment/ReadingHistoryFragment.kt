@@ -38,7 +38,7 @@ class ReadingHistoryFragment : BaseFragment<FragmentReadingHistoryBinding, Readi
                 MenuFragment.TAG, TYPE_LEARN, false
             )
         }
-        setUpNoOnBackPressed()
+        setUpOnBackMenu(TYPE_LEARN)
     }
 
     @Suppress("UNCHECKED_CAST")

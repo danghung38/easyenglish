@@ -10,6 +10,8 @@ import com.danghung.elearning.api.res.ApiErrorRes
 import com.danghung.elearning.databinding.FragmentChatbotBinding
 import com.danghung.elearning.model.ChatMessage
 import com.danghung.elearning.view.adapter.ChatAdapter
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_HOME
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_PROFILE
 import com.danghung.elearning.viewmodel.ChatbotVM
 
 class ChatbotFragment : BaseFragment<FragmentChatbotBinding, ChatbotVM>() {
@@ -36,7 +38,9 @@ class ChatbotFragment : BaseFragment<FragmentChatbotBinding, ChatbotVM>() {
         // Vì không lưu trạng thái chat, luôn thêm câu chào mặc định mỗi lần mở Fragment
         addWelcomeMessage()
         viewModel.getMyInfo()
+        setUpOnBackMenu(TYPE_HOME)
     }
+
 
     private fun initEdtSearch() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
@@ -69,7 +73,7 @@ class ChatbotFragment : BaseFragment<FragmentChatbotBinding, ChatbotVM>() {
 
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            callBack.showFragment(MenuFragment.TAG, TYPE_HOME, false)
         }
 
         binding.btnSend.setOnClickListener {

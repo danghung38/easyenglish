@@ -33,6 +33,4 @@ class TranslationVM : BaseViewModel() {
                 }
             })
     }
-
-    override fun handleSuccess(key: String?, data: Any?) {}
 }

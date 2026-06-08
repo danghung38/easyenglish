@@ -12,6 +12,7 @@ import com.danghung.elearning.model.StartPracticeData
 import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.view.dialog.StartTestDialog
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.PracticeVM
 import com.danghung.elearning.viewmodel.PracticeVM.Companion.START_FULL
 import com.danghung.elearning.viewmodel.PracticeVM.Companion.START_SINGLE
@@ -46,25 +47,7 @@ class PracticeFragment : BaseFragment<FragmentPracticeBinding, PracticeVM>(), St
         binding.btnStartWriting.setOnClickListener(this)
         binding.btnStartSpeaking.setOnClickListener(this)
         binding.btnStartListening.setOnClickListener(this)
-        onBack()
-    }
-
-    private fun onBack() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    val dialog = ExitDialog(requireContext())
-                    dialog.setCallBack(object : ExitDialog.OnExitCallBack {
-                        override fun onExit() {
-                            callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
-                            // Hoặc nếu muốn pop fragment thông thường:
-                            // parentFragmentManager.popBackStack()
-                        }
-                    })
-
-                    dialog.show()
-                }
-            })
+        setUpOnBackMenu(TYPE_EXAMS)
     }
 
     @SuppressLint("SetTextI18n")

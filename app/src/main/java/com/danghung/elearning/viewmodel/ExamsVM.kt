@@ -29,6 +29,9 @@ class ExamsVM : BaseViewModel() {
                 callBack?.apiSuccess(GET_EXAM_LIST, res.result)
                 examList = res.result?.items
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

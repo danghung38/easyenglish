@@ -21,6 +21,7 @@ import com.danghung.elearning.view.OnMainCallback
 import com.danghung.elearning.view.dialog.ErrorDialog
 import com.danghung.elearning.view.dialog.ExitDialog
 import com.danghung.elearning.viewmodel.BaseViewModel
+import com.danghung.elearning.viewmodel.LoginVM
 import com.danghung.elearning.viewmodel.LoginVM.Companion.KEY_TOKEN
 
 abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View.OnClickListener, OnAPICallBack, ErrorDialog.OnMenuCallBack {
@@ -95,24 +96,41 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
     override fun apiError(key: String, code: Int, data: Any?) {
         callBack.hideLoading()
         callBack.hideLoad()
+
         if (code == 401) {
-            CommonUtils.getInstance().clearPref(KEY_TOKEN)
-            notify(R.string.txt_err_expired_login)
-            callBack.showFragment(LoginFragment.TAG, null, false)
+            if (key == BaseViewModel.REFRESH_TOKEN) {
+                forceLogout()
+                return
+            }
+
+            val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
+
+            if (!token.isNullOrBlank()) {
+                viewModel.refreshToken()
+            } else {
+                forceLogout()
+            }
             return
-        }else if(code == 500){
+        }
+
+        if (code == 500) {
             notify(R.string.txt_server_error)
-            var dialog = ErrorDialog(requireContext())
+            val dialog = ErrorDialog(requireContext())
             dialog.setCallBack(this)
             dialog.show()
-        }
-        else{
+        } else {
             val error = data as? ApiErrorRes
-            notify("${error?.message ?: R.string.txt_err_expired_login}")
+            notify(error?.message ?: getString(R.string.txt_err_expired_login))
             handleApiError(key, code, error)
         }
     }
 
+    private fun forceLogout() {
+        CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+        CommonUtils.getInstance().clearPref(SecurityFragment.KEY_LOGIN_FINGER)
+        notify(R.string.txt_err_expired_login)
+        callBack.showFragment(LoginFragment.TAG, null, false)
+    }
     protected open fun handleApiSuccess(key: String, data: Any?){
         //do nothing
     }
@@ -130,11 +148,20 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
         viewModel.retryLastApi()
     }
 
-    protected fun setUpNoOnBackPressed() {
+//    protected fun setUpNoOnBackPressed() {
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//
+//                }
+//            })
+//    }
+
+    protected fun setUpOnBackMenu(type: Int) {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-
+                    callBack.showFragment(MenuFragment.TAG, type, false)
                 }
             })
     }

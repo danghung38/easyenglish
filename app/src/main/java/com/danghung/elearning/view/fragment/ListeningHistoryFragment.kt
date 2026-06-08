@@ -74,7 +74,7 @@ class ListeningHistoryFragment : BaseFragment<FragmentListeningHistoryBinding, L
         binding.ivBack.setOnClickListener {
             callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
         }
-        setUpNoOnBackPressed()
+        setUpOnBackMenu(TYPE_LEARN)
     }
 
     // Preload — prepare() toàn bộ player ngay khi có dữ liệu

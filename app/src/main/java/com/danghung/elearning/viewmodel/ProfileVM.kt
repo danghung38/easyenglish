@@ -70,6 +70,9 @@ class ProfileVM : BaseViewModel() {
             UPDATE_USER -> {
                 callBack?.apiSuccess(UPDATE_USER, null)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

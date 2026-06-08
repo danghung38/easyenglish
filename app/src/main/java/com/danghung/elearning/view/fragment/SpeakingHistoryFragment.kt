@@ -31,7 +31,6 @@ class SpeakingHistoryFragment : BaseFragment<FragmentSpeakingHistoryBinding, Spe
         FragmentSpeakingHistoryBinding.inflate(inflater, container, false)
 
     override fun initViews() {
-        setUpNoOnBackPressed()
         userExamPartId = data as? Long ?: 0L
 
         callBack.showLoad()
@@ -41,6 +40,7 @@ class SpeakingHistoryFragment : BaseFragment<FragmentSpeakingHistoryBinding, Spe
         binding.ivBack.setOnClickListener {
             callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
         }
+        setUpOnBackMenu(TYPE_LEARN)
     }
 
     @Suppress("UNCHECKED_CAST")

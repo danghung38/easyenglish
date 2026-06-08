@@ -41,6 +41,9 @@ class SecurityVM: BaseViewModel() {
             CHANGE_PASSWORD -> {
                 callBack?.apiSuccess(CHANGE_PASSWORD, null)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

@@ -24,6 +24,9 @@ class VocabularyVM : BaseViewModel() {
                 val res = data as ApiRes<List<VocabularyRes>>
                 callBack?.apiSuccess(GET_VOCABULARY, res.result)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

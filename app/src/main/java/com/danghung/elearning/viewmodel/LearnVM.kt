@@ -53,6 +53,9 @@ class LearnVM : BaseViewModel() {
                 val res = data as ApiRes<UserExamRes>
                 callBack?.apiSuccess(GET_USER_EXAM, res.result)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

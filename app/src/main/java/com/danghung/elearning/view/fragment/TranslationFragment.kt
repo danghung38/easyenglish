@@ -8,6 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import com.danghung.elearning.api.res.ApiErrorRes
 import com.danghung.elearning.databinding.FragmentTranslationBinding
 import com.danghung.elearning.model.MyMemoryResponse
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_HOME
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
 import com.danghung.elearning.viewmodel.TranslationVM
 
 class TranslationFragment : BaseFragment<FragmentTranslationBinding, TranslationVM>() {
@@ -36,14 +38,7 @@ class TranslationFragment : BaseFragment<FragmentTranslationBinding, Translation
                 doTranslate(); true
             } else false
         }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    callBack.showFragment(MenuFragment.TAG, null, false)
-                }
-            }
-        )
+        setUpOnBackMenu(TYPE_HOME)
     }
 
     private var isEnToVi = true  // toggle hướng dịch

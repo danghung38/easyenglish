@@ -48,6 +48,9 @@ class RegisterVM : BaseViewModel() {
             CREATE_USER -> {
                 callBack?.apiSuccess(CREATE_USER, null)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 

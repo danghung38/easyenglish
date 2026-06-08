@@ -48,7 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginVM>(),
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 failCount = 0
-                callBack.showLoad()
+                callBack.showLoading()
                 // Dùng ProfileVM để call getMyInfo xác thực token
                 // Nếu token hết hạn -> app tự đẩy về Login (đã xử lý sẵn)
                 viewModel.verifyToken()

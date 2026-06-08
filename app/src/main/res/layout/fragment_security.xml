@@ -63,6 +63,8 @@
 
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
@@ -72,30 +74,30 @@
                 android:id="@+id/tvName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/font_inter"
+                android:fontFamily="sans-serif-light"
                 android:gravity="start"
                 android:maxLines="1"
                 android:text="@string/txt_account_protection"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_app"
                 android:textFontWeight="600"
                 android:textSize="20sp"
                 android:visibility="visible" />
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:gravity="start"
-                android:text="@string/txt_des_security"
-                android:textColor="@color/color_splash_des"
-                android:textFontWeight="450"
-                android:textSize="13sp"
-                tools:ignore="TextContrastCheck" />
+<!--            <TextView-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="sans-serif-light"-->
+<!--                android:gravity="start"-->
+<!--                android:text="@string/txt_des_security"-->
+<!--                android:textColor="@color/color_text_app"-->
+<!--                android:textFontWeight="550"-->
+<!--                android:textSize="14sp"-->
+<!--                tools:ignore="TextContrastCheck" />-->
 
             <!-- Row bật/tắt vân tay -->
             <LinearLayout
+                android:layout_marginTop="-5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -106,9 +108,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/font_inter"
-                    android:textColor="@color/color_text_app"
-                    android:textSize="14sp"
+                    android:textColor="@color/color_splash_des"
                     android:textStyle="bold"
+                    android:textSize="14sp"
                     android:text="Log in using your fingerprint." />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial

@@ -47,6 +47,9 @@ class PracticeVM : BaseViewModel() {
                 val res = data as ApiRes<UserExamRes>
                 callBack?.apiSuccess(START_FULL, res.result)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 

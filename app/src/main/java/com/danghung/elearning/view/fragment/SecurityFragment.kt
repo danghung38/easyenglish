@@ -33,7 +33,7 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding, SecurityVM>() {
         binding.ivBack.setOnClickListener {
             callBack.showFragment(MenuFragment.TAG, TYPE_PROFILE, false)
         }
-        setUpOnBackPressed()
+        setUpOnBackMenu(TYPE_PROFILE)
     }
 
     private fun setupFingerprintSwitch() {
@@ -124,14 +124,5 @@ class SecurityFragment : BaseFragment<FragmentSecurityBinding, SecurityVM>() {
         binding.edtOldPassword.text?.clear()
         binding.edtNewPassword.text?.clear()
         binding.edtConfirmPassword.text?.clear()
-    }
-
-    private fun setUpOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    callBack.showFragment(MenuFragment.TAG, TYPE_PROFILE, false)
-                }
-            })
     }
 }

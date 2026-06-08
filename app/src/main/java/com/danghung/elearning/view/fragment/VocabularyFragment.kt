@@ -30,7 +30,7 @@ class VocabularyFragment : BaseFragment<FragmentVocabularyBinding, VocabularyVM>
         binding.tvTitle.text = title
         //callBack.showLoading()
         viewModel.getVocabularies(title)
-        setUpNoOnBackPressed()
+        setUpOnBackMenu(TYPE_LEARN)
         binding.ivBack.setOnClickListener { callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false) }
     }
 

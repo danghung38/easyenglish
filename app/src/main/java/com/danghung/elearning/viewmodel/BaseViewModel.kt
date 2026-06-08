@@ -24,6 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 abstract class BaseViewModel : ViewModel() {
+
     companion object {
         val TAG = BaseViewModel::class.java.name
         const val REFRESH_TOKEN = "REFRESH_TOKEN"
@@ -34,13 +35,15 @@ abstract class BaseViewModel : ViewModel() {
     protected val token: String?
         get() = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
 
+    private var lastApiCall: (() -> Unit)? = null
+    private var pendingApiCallAfterRefresh: (() -> Unit)? = null
+    private var isRefreshingToken = false
+
     fun setOnCallBack(callBack: OnAPICallBack) {
         this.callBack = callBack
     }
 
-    var lastApiCall: (() -> Unit)? = null
-
-    fun retryLastApi(){
+    fun retryLastApi() {
         lastApiCall?.invoke()
     }
 
@@ -50,14 +53,30 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     fun refreshToken() {
-        executeApi {
-            api(AuthApi::class.java)
-                .refresh(RefreshReq(token ?: ""))
-                .enqueue(initHandleResponse(REFRESH_TOKEN))
+        val oldToken = token
+
+        if (oldToken.isNullOrBlank()) {
+            callBack?.apiError(REFRESH_TOKEN, 401, null)
+            return
         }
+
+        if (isRefreshingToken) {
+            return
+        }
+
+        isRefreshingToken = true
+
+        // Lưu API cũ bị lỗi 401 để refresh xong gọi lại.
+        pendingApiCallAfterRefresh = lastApiCall
+
+        // Không dùng executeApi ở đây.
+        // Vì nếu dùng executeApi, lastApiCall sẽ bị ghi đè thành API refresh.
+        api(AuthApi::class.java)
+            .refresh(RefreshReq(oldToken))
+            .enqueue(initHandleResponse(REFRESH_TOKEN))
     }
 
-    //countdown for exam
+    // countdown for exam
     private val _timeSeconds = MutableLiveData<Int>()
     private val _formattedTime = MutableLiveData<String>()
     val formattedTime: LiveData<String> = _formattedTime
@@ -101,11 +120,9 @@ abstract class BaseViewModel : ViewModel() {
         return String.format("%02d:%02d", m, s)
     }
 
-    // TẠO API THEO CLASS
     protected fun <T> api(clazz: Class<T>): T {
         return ApiClient.retrofit.create(clazz)
     }
-
 
     protected fun <T> initHandleResponse(key: String): Callback<T> {
         return object : Callback<T> {
@@ -122,17 +139,27 @@ abstract class BaseViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<T?>, t: Throwable) {
-                Log.e(TAG, "onFailure: " + t.message)
+                Log.e(TAG, "onFailure: ${t.message}")
                 handleException(key, t)
             }
         }
     }
 
     protected open fun handleException(key: String?, t: Throwable) {
-        callBack!!.apiError(key!!, 999, t.message)
+        if (key == REFRESH_TOKEN) {
+            isRefreshingToken = false
+            pendingApiCallAfterRefresh = null
+        }
+
+        callBack?.apiError(key ?: "", 999, t.message)
     }
 
-    protected open fun handleFail(key: String?, code: Int, errorBody: ResponseBody? ) {
+    protected open fun handleFail(key: String?, code: Int, errorBody: ResponseBody?) {
+        if (key == REFRESH_TOKEN) {
+            isRefreshingToken = false
+            pendingApiCallAfterRefresh = null
+        }
+
         val apiError = try {
             if (errorBody != null) {
                 Gson().fromJson(errorBody.string(), ApiErrorRes::class.java)
@@ -142,11 +169,37 @@ abstract class BaseViewModel : ViewModel() {
         } catch (_: Exception) {
             ApiErrorRes(code, "Parse error", null)
         }
-        callBack!!.apiError(key!!, code, apiError)
+
+        callBack?.apiError(key ?: "", code, apiError)
     }
 
+    @Suppress("UNCHECKED_CAST")
     protected open fun handleSuccess(key: String?, data: Any?) {
-        
-        callBack!!.apiSuccess(key!!, data)
+        when (key) {
+            REFRESH_TOKEN -> {
+                isRefreshingToken = false
+
+                val res = data as? ApiRes<AuthRes>
+                val newToken = res?.result?.token
+
+                if (newToken.isNullOrBlank()) {
+                    pendingApiCallAfterRefresh = null
+                    callBack?.apiError(REFRESH_TOKEN, 401, null)
+                    return
+                }
+
+                CommonUtils.getInstance().savePref(LoginVM.KEY_TOKEN, newToken)
+
+                val apiNeedRetry = pendingApiCallAfterRefresh
+                pendingApiCallAfterRefresh = null
+
+                apiNeedRetry?.invoke()
+                return
+            }
+        }
+
+        if (key != null) {
+            callBack?.apiSuccess(key, data)
+        }
     }
 }

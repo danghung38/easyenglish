@@ -65,7 +65,7 @@
     <string name="txt_dob">2004/01/10</string>
     <string name="txt_update">Update Information</string>
     <string name="txt_account_protection">Account Protection</string>
-    <string name="txt_des_security">Manage your security and account access</string>
+    <string name="txt_des_security">Manage your account security</string>
     <string name="txt_security_password"><![CDATA[Security & Password]]></string>
     <string name="txt_des_security_2">Ensure your account is using a strong, unique password.</string>
     <string name="txt_current_password">Current Password</string>

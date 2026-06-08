@@ -43,6 +43,9 @@ class ChatbotVM : BaseViewModel() {
                 val botReply = responseBody?.string() ?: "Hệ thống bận, vui lòng thử lại sau."
                 callBack?.apiSuccess(SEND_CHAT, botReply)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

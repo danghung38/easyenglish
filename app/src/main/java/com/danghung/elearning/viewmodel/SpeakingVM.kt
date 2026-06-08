@@ -93,6 +93,9 @@ class SpeakingVM : BaseViewModel() {
                 val res = data as ApiRes<List<UserAnswerRes>>
                 callBack?.apiSuccess(GET_SPEAKING_HISTORY, res.result)
             }
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

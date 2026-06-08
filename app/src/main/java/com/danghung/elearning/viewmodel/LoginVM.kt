@@ -39,6 +39,9 @@ class LoginVM : BaseViewModel() {
                 callBack?.apiSuccess(LOGIN, null)
             }
             VERIFY_TOKEN -> callBack?.apiSuccess(VERIFY_TOKEN, null)
+            else -> {
+                super.handleSuccess(key, data)
+            }
         }
     }
 }

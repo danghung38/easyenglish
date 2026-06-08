@@ -28,7 +28,6 @@ class WritingHistoryFragment : BaseFragment<FragmentWritingHistoryBinding, Writi
         FragmentWritingHistoryBinding.inflate(inflater, container, false)
 
     override fun initViews() {
-        setUpNoOnBackPressed()
         userExamPartId = data as? Long ?: 0L
         callBack.showLoad()
         //callBack.showLoading()
@@ -37,6 +36,8 @@ class WritingHistoryFragment : BaseFragment<FragmentWritingHistoryBinding, Writi
         binding.ivBack.setOnClickListener {
             callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
         }
+        setUpOnBackMenu(TYPE_LEARN)
+
     }
 
     @Suppress("UNCHECKED_CAST")
