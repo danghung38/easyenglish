@@ -5,6 +5,7 @@ import com.danghung.elearning.api.AuthApi
 import com.danghung.elearning.api.UserApi
 import com.danghung.elearning.api.req.ChangePasswordReq
 import com.danghung.elearning.api.req.LogoutReq
+import com.danghung.elearning.view.fragment.SecurityFragment.Companion.KEY_LOGIN_FINGER
 
 class SecurityVM: BaseViewModel() {
     companion object {
@@ -34,6 +35,7 @@ class SecurityVM: BaseViewModel() {
         when (key) {
             LOGOUT -> {
                 CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+                CommonUtils.getInstance().clearPref(KEY_LOGIN_FINGER)
                 callBack?.apiSuccess(LOGOUT, null)
             }
             CHANGE_PASSWORD -> {

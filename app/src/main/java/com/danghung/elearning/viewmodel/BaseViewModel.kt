@@ -9,7 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.danghung.elearning.CommonUtils
 import com.danghung.elearning.OnAPICallBack
 import com.danghung.elearning.api.ApiClient
+import com.danghung.elearning.api.AuthApi
+import com.danghung.elearning.api.req.RefreshReq
 import com.danghung.elearning.api.res.ApiErrorRes
+import com.danghung.elearning.api.res.ApiRes
+import com.danghung.elearning.api.res.AuthRes
 import com.google.gson.Gson
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,6 +26,7 @@ import retrofit2.Response
 abstract class BaseViewModel : ViewModel() {
     companion object {
         val TAG = BaseViewModel::class.java.name
+        const val REFRESH_TOKEN = "REFRESH_TOKEN"
     }
 
     protected var callBack: OnAPICallBack? = null
@@ -42,6 +47,14 @@ abstract class BaseViewModel : ViewModel() {
     protected fun executeApi(apiCall: () -> Unit) {
         lastApiCall = apiCall
         apiCall()
+    }
+
+    fun refreshToken() {
+        executeApi {
+            api(AuthApi::class.java)
+                .refresh(RefreshReq(token ?: ""))
+                .enqueue(initHandleResponse(REFRESH_TOKEN))
+        }
     }
 
     //countdown for exam
@@ -133,6 +146,7 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected open fun handleSuccess(key: String?, data: Any?) {
+        
         callBack!!.apiSuccess(key!!, data)
     }
 }

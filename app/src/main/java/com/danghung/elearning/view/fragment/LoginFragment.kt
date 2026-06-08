@@ -7,15 +7,20 @@ import com.danghung.elearning.CommonUtils
 import com.danghung.elearning.databinding.FragmentLoginBinding
 import com.danghung.elearning.view.dialog.LoginSuccessDialog
 import com.danghung.elearning.viewmodel.LoginVM
-import com.danghung.elearning.viewmodel.LoginVM.Companion.KEY_TOKEN
 import com.danghung.elearning.viewmodel.LoginVM.Companion.LOGIN
-
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import com.danghung.elearning.view.fragment.SecurityFragment.Companion.KEY_LOGIN_FINGER
+import com.danghung.elearning.viewmodel.ProfileVM
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginVM>(),
     LoginSuccessDialog.OnMenuCallBack {
+
     companion object {
         val TAG: String = LoginFragment::class.java.name
     }
+
+    private var failCount = 0
 
     override fun getClassVM(): Class<LoginVM> = LoginVM::class.java
 
@@ -24,12 +29,63 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginVM>(),
     ): FragmentLoginBinding = FragmentLoginBinding.inflate(inflater, container, false)
 
     override fun initViews() {
-        val token = CommonUtils.getInstance().getPref(KEY_TOKEN)
-        if (!token.isNullOrBlank()) {
-            callBack.showFragment(MenuFragment.TAG, null, false)
+        val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
+        val isFinger = CommonUtils.getInstance().getPref(KEY_LOGIN_FINGER) != null
+
+        if (!token.isNullOrBlank() && isFinger) {
+            showBiometricPrompt()
             return
         }
 
+
+        binding.tvSignUp.setOnClickListener(this)
+        binding.btnLogin.setOnClickListener(this)
+    }
+
+    private fun showBiometricPrompt() {
+        val executor = ContextCompat.getMainExecutor(requireContext())
+
+        val callback = object : BiometricPrompt.AuthenticationCallback() {
+            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                failCount = 0
+                callBack.showLoad()
+                // Dùng ProfileVM để call getMyInfo xác thực token
+                // Nếu token hết hạn -> app tự đẩy về Login (đã xử lý sẵn)
+                viewModel.verifyToken()
+            }
+
+            override fun onAuthenticationFailed() {
+                failCount++
+                if (failCount >= 5) {
+                    clearAndForceLogin()
+                }
+            }
+
+            override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                // Người dùng bấm Cancel hoặc lỗi hệ thống -> cho nhập tk/mk
+                setupLoginUI()
+            }
+        }
+
+        val prompt = BiometricPrompt(this, executor, callback)
+        val info = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Fingerprint Login")
+            .setSubtitle("Verify your identity to continue")
+            .setNegativeButtonText("Use Password")
+            .build()
+
+        prompt.authenticate(info)
+    }
+
+    private fun clearAndForceLogin() {
+        CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+        CommonUtils.getInstance().clearPref(KEY_LOGIN_FINGER)
+        failCount = 0
+        notify("Authentication failed multiple times. Please log in again.")
+        setupLoginUI()
+    }
+
+    private fun setupLoginUI() {
         binding.tvSignUp.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
     }
@@ -48,14 +104,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginVM>(),
             notify("Username and password must not be empty!")
             return
         }
-        callBack.showLoading()
+        callBack.showLoad()
         viewModel.login(username, password)
     }
-
 
     override fun handleApiSuccess(key: String, data: Any?) {
         when (key) {
             LOGIN -> handleLoginSuccess()
+            LoginVM.VERIFY_TOKEN -> handleLoginSuccess()
         }
     }
 
@@ -66,5 +122,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginVM>(),
     }
 
     override fun onMenu() = callBack.showFragment(MenuFragment.TAG, null, false)
-
 }
