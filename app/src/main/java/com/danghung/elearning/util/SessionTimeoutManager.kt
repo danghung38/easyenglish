@@ -11,7 +11,7 @@ import com.danghung.elearning.viewmodel.LoginVM
 object SessionTimeoutManager : DefaultLifecycleObserver {
 
     // Thời gian tối đa cho phép chạy nền (ví dụ: 5 phút = 5 * 60 * 1000L)
-    private const val TIMEOUT_MS = 5 * 60 * 1000L
+    private const val TIMEOUT_MS = 1 * 60 * 1000L
 
     private var backgroundTimestampMs: Long = 0L
     private var onSessionTimeoutListener: ((requireBiometric: Boolean) -> Unit)? = null

@@ -4,17 +4,15 @@ import android.content.Intent
 import android.provider.Settings
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.media3.common.BuildConfig
 import com.danghung.elearning.CommonUtils
 import com.danghung.elearning.databinding.ActivityHomeBinding
 import com.danghung.elearning.utils.SecurityCheckUtils
 import com.danghung.elearning.utils.SessionTimeoutManager
 import com.danghung.elearning.view.dialog.SecurityErrorDialog
-import com.danghung.elearning.view.fragment.LoginFragment
 import com.danghung.elearning.view.fragment.SplashFragment
 import com.danghung.elearning.viewmodel.CommomVM
 import com.danghung.elearning.viewmodel.LoginVM
-import com.danghung.elearning.utils.PrivacyShieldManager
+
 class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
 
     private var securityDialog: SecurityErrorDialog? = null
@@ -29,28 +27,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
-        // bảo vệ màn hình Recent Apps (Màn mờ)
-        PrivacyShieldManager.register(this)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            setRecentsScreenshotEnabled(false)
+        }
 
         setupSessionTimeout()
         showFragment(SplashFragment.TAG, null, false)
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            // 1. Khi quay lại app: Gỡ màn che logo VÀ bật lại FLAG_SECURE ngay lập tức
-            PrivacyShieldManager.hideShield()
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE
-            )
-        } else {
-            // 2. Khi vuốt đa nhiệm / bấm Home: Phủ màn che logo lên trước,
-            // sau đó tạm mở FLAG_SECURE để hệ thống chụp đúng tấm hình logo làm thumbnail
-            PrivacyShieldManager.showShield()
-            window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        }
+    override fun onResume() {
+        super.onResume()
+        // verifyDeviceSecurity()
     }
 
     private fun setupSessionTimeout() {
@@ -69,14 +56,13 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            // Đẩy về màn Login (nếu có vân tay, LoginFragment sẽ tự bật BiometricPrompt)
-            showFragment(LoginFragment.TAG, null, false)
-        }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        verifyDeviceSecurity()
+            val intent = Intent(this, HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun verifyDeviceSecurity() {
@@ -97,7 +83,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
                     override fun onOpenSettings() {
                         try {
                             startActivity(Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
-                        } catch (e: Exception) {
+                        } catch (_: Exception) {
                             startActivity(Intent(Settings.ACTION_SETTINGS))
                         }
                     }
@@ -116,7 +102,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
     }
 
     override fun onDestroy() {
-        PrivacyShieldManager.unregister()
         securityDialog?.dismiss()
         super.onDestroy()
     }

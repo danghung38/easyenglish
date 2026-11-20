@@ -380,7 +380,6 @@
         android:layout_marginTop="3dp"
         android:fontFamily="sans-serif-light"
         android:gravity="center"
-        android:text="@string/txt_des_logout"
         android:textColor="@color/color_splash_des"
         android:textFontWeight="400"
         android:textSize="11sp"

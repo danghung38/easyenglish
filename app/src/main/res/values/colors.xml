@@ -16,7 +16,7 @@
     <color name="color_nor">#9CA3AF</color>
     <color name="color_des_login">#64748B</color>
     <color name="color_line">#CFD7E7</color>
-    <color name="color_bg_loading">#F2FFFFFF</color>
+    <color name="color_bg_loading">#FFFFFF</color>
     <color name="color_text_profile">#6B7280</color>
     <color name="color_logout">#EF4444</color>
     <color name="color_completed">#22C55E</color>

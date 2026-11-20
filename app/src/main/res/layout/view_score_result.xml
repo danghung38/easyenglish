@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:minWidth="300dp"
+            android:minWidth="330dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
@@ -43,7 +43,7 @@
                 android:id="@+id/tvScoreLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="6dp"
                 android:fontFamily="@font/font_inter"
                 android:text="@string/txt_ielts_band_score"
                 android:textColor="@color/color_splash_des"
@@ -55,14 +55,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_inter"
                 android:textColor="@color/color_app"
-                android:textSize="44sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
                 tools:text="7.0" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="6dp"
                 android:fontFamily="@font/font_inter"
                 android:gravity="center"
                 android:lineSpacingExtra="3dp"

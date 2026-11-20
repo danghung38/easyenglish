@@ -35,7 +35,7 @@
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                tools:text="TASK 1" />
+                tools:text="TASK" />
 
             <TextView
                 android:id="@+id/tvAiScore"

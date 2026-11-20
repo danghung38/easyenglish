@@ -29,6 +29,6 @@
         android:clickable="true"
         android:elevation="10dp"
         android:focusable="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </FrameLayout>
