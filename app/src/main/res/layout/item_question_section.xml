@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvSectionTitle"
+            android:background="@drawable/bg_question"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:layout_height="34dp"
+            android:layout_width="100dp"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Section 1" />
+
+        <TextView
+            android:id="@+id/tvSectionContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/font_inter"
+            android:lineSpacingExtra="3dp"
+            android:textColor="@color/color_text_app"
+            android:textSize="15sp"
+            tools:text="Listen and answer questions 1–5." />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

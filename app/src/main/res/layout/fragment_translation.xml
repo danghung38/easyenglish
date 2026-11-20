@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_app"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Language selector bar -->
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_search"
+        android:gravity="center"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/tvLangFrom"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="EN"
+            android:textFontWeight="700"
+            android:textSize="18sp"
+            android:textColor="@color/color_app"/>
+
+        <ImageView
+            android:id="@+id/btnSwapLang"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_swap" />
+
+        <TextView
+            android:id="@+id/tvLangTo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="VI"
+            android:textFontWeight="700"
+            android:textSize="18sp"
+            android:textColor="@color/color_app"/>
+    </TableRow>
+
+    <!-- Input box -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginBottom="30dp"
+        app:cardCornerRadius="12dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btnSearch"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="Nhập từ, cụm từ hoặc câu..."
+                android:imeOptions="actionSearch"
+                android:inputType="textMultiLine"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/btnSearch"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_search" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Progress -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- Kết quả dịch chính -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        app:cardCornerRadius="12dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
+            android:padding="15dp"
+            android:textColor="@color/color_app"
+            android:textFontWeight="600"
+            android:textSize="18sp"
+            android:lineSpacingMultiplier="1.4"/>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Gợi ý từ matches -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_related_results"
+        android:textFontWeight="700"
+        android:textSize="16sp"
+        android:textColor="@color/color_splash_des"
+        android:layout_marginBottom="15dp"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <TextView
+            android:id="@+id/tvSuggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.4"
+            android:textSize="16sp"
+            android:visibility="gone" />
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

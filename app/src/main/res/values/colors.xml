@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="color_splash_des">#94A3B8</color>
+    <color name="color_text_app">#334155</color>
+    <color name="color_bg_app">#F8FAFC</color>
+    <color name="color_app">#3B82F6</color>
+    <color name="color_bg_btn">#DE4583F4</color>
+    <color name="color_bg_listening">#3B82F6</color>
+    <color name="color_bg_reading">#FAB005</color>
+    <color name="color_bg_speaking">#14B8A6</color>
+    <color name="color_bg_writing">#FA5252</color>
+    <color name="color_bg_fulltest">#22C55E</color>
+    <color name="gray">#9A9090</color>
+    <color name="color_nor">#9CA3AF</color>
+    <color name="color_des_login">#64748B</color>
+    <color name="color_line">#CFD7E7</color>
+    <color name="color_bg_loading">#F2FFFFFF</color>
+    <color name="color_text_profile">#6B7280</color>
+    <color name="color_logout">#EF4444</color>
+    <color name="color_completed">#22C55E</color>
+    <color name="color_bg_listening3">#DBEAFE</color>
+    <color name="color_bg_reading3">#F4F2DF</color>
+    <color name="color_bg_speaking3">#F0FDF4</color>
+    <color name="color_bg_writing3">#FEF2F2</color>
+    <color name="color_hint">#858D99</color>
+    <color name="color_stop">#EB2021</color>
+    <color name="color_start">#53EB1F</color>
+    <color name="color_retry">#328FE9</color>
+    <color name="color_correct">#4CFF0D</color>
+    <color name="color_wrong">#FF1104</color>
+    <color name="color_submit">#135BEC</color>
+    <color name="color_gray">#48566A</color>
+    <color name="color_error">#F44336</color>
+    <color name="color_card_back">#C5A39BFF</color>
+</resources>

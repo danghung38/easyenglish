@@ -1,0 +1,194 @@
+package com.danghung.elearning.view.fragment
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
+import com.danghung.elearning.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.viewbinding.ViewBinding
+import com.danghung.elearning.CommonUtils
+import com.danghung.elearning.OnAPICallBack
+import com.danghung.elearning.api.res.ApiErrorRes
+import com.danghung.elearning.view.OnMainCallback
+import com.danghung.elearning.view.dialog.ErrorDialog
+import com.danghung.elearning.view.dialog.ExitDialog
+import com.danghung.elearning.viewmodel.BaseViewModel
+import com.danghung.elearning.viewmodel.LoginVM
+import com.danghung.elearning.viewmodel.LoginVM.Companion.KEY_TOKEN
+
+abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View.OnClickListener, OnAPICallBack, ErrorDialog.OnMenuCallBack {
+    protected lateinit var mContext: Context
+    protected lateinit var binding: V
+
+    protected lateinit var viewModel: M
+    protected lateinit var callBack: OnMainCallback
+    protected var data: Any? = null
+
+    fun setOnCallBack(callBack: OnMainCallback) {
+        this.callBack = callBack
+    }
+
+    fun setAttachData(data: Any?) {
+        this.data = data
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.mContext = context
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = initViewBinding(inflater, container)
+        viewModel = ViewModelProvider(this)[getClassVM()]
+        viewModel.setOnCallBack(this)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    @SuppressLint("PrivateResource")
+    override fun onClick(v: View) {
+        v.startAnimation(AnimationUtils.loadAnimation(context, androidx.appcompat.R.anim.abc_fade_in))
+        clickView(v)
+    }
+
+    protected open fun clickView(v: View){
+        //do nothing
+    }
+
+
+    abstract fun initViews()
+
+    abstract fun getClassVM(): Class<M>
+
+    abstract fun initViewBinding(inflater: LayoutInflater, container: ViewGroup?): V
+
+    protected fun notify(msg: String?) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun notify(msg: Int) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun apiSuccess(key: String, data: Any?) {
+        callBack.hideLoading()
+        callBack.hideLoad()
+        handleApiSuccess(key, data)
+    }
+
+    override fun apiError(key: String, code: Int, data: Any?) {
+        callBack.hideLoading()
+        callBack.hideLoad()
+
+        if (code == 401) {
+            if (key == BaseViewModel.REFRESH_TOKEN) {
+                forceLogout()
+                return
+            }
+
+            val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
+
+            if (!token.isNullOrBlank()) {
+                viewModel.refreshToken()
+            } else {
+                forceLogout()
+            }
+            return
+        }
+
+        if (code == 500) {
+            notify(R.string.txt_server_error)
+            val dialog = ErrorDialog(requireContext())
+            dialog.setCallBack(this)
+            dialog.show()
+        } else {
+            val error = data as? ApiErrorRes
+            notify(error?.message ?: getString(R.string.txt_err_expired_login))
+            handleApiError(key, code, error)
+        }
+    }
+
+    private fun forceLogout() {
+        CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+        CommonUtils.getInstance().clearPref(SecurityFragment.KEY_LOGIN_FINGER)
+        notify(R.string.txt_err_expired_login)
+        callBack.showFragment(LoginFragment.TAG, null, false)
+    }
+    protected open fun handleApiSuccess(key: String, data: Any?){
+        //do nothing
+    }
+
+    protected open fun handleApiError(key: String, code: Int, error: ApiErrorRes?){
+        //do nothing
+    }
+
+    override fun onExit() {
+        requireActivity().finish()
+    }
+
+    override fun onRetry() {
+        callBack.showLoading()
+        viewModel.retryLastApi()
+    }
+
+//    protected fun setUpNoOnBackPressed() {
+//        requireActivity().onBackPressedDispatcher.addCallback(
+//            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//
+//                }
+//            })
+//    }
+
+    protected fun setUpOnBackMenu(type: Int) {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner, object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    callBack.showFragment(MenuFragment.TAG, type, false)
+                }
+            })
+    }
+
+    protected fun setupBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    askForExitApp()
+                }
+            }
+        )
+    }
+
+    private fun askForExitApp() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Alert")
+            .setMessage("Close this app?")
+            .setPositiveButton("Close") { _, _ ->
+                requireActivity().finish()
+            }
+            .setNegativeButton("Don't") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+}
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_bg_app"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:padding="7dp"
+            android:src="@drawable/ic_back"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginEnd="56dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_new_vocabulary"
+            android:textColor="@color/color_app"
+            android:textFontWeight="800"
+            android:textSize="24sp"
+            tools:ignore="TextSizeCheck" />
+    </TableRow>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpVocabulary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_success"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
+                android:text="@string/txt_sign_up_success"
+                android:textFontWeight="800"
+                android:textSize="22sp"
+                tools:ignore="TextSizeCheck" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/txt_resgister_success"
+                android:textColor="@color/color_splash_des"
+                android:textFontWeight="400"
+                android:textSize="14sp"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/btnLoginNow"
+                android:clickable="true"
+                android:layout_width="300dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_btn_register"
+                android:fontFamily="@font/font_inter"
+                android:gravity="center"
+                android:paddingBottom="30dp"
+                android:text="@string/txt_login_now"
+                android:textColor="@android:color/white"
+                android:textFontWeight="730"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
