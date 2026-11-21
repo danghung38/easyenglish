@@ -8,13 +8,11 @@ import android.widget.TextView
 import com.danghung.elearning.R
 import com.danghung.elearning.api.req.UserCreationReq
 import com.danghung.elearning.databinding.FragmentRegisterBinding
-import com.danghung.elearning.view.dialog.RegisterSuccessDialog
 import com.danghung.elearning.viewmodel.RegisterVM
 import com.danghung.elearning.viewmodel.RegisterVM.Companion.CREATE_USER
 
 
-class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterVM>(),
-    RegisterSuccessDialog.OnLoginCallBack {
+class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterVM>() {
     companion object {
         val TAG: String = RegisterFragment::class.java.name
     }
@@ -29,6 +27,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterVM>(),
         setupGender()
         binding.ivBack.setOnClickListener(this)
         binding.tvHaveAccount.setOnClickListener(this)
+        binding.btnVerifyExistingAccount.setOnClickListener(this)
         binding.btnRegister.setOnClickListener(this)
 
     }
@@ -37,6 +36,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterVM>(),
         when (v.id) {
             binding.ivBack.id -> requireActivity().onBackPressedDispatcher.onBackPressed()
             binding.tvHaveAccount.id -> requireActivity().onBackPressedDispatcher.onBackPressed()
+            binding.btnVerifyExistingAccount.id ->
+                callBack.showFragment(OtpVerificationFragment.TAG, null, true)
             binding.btnRegister.id -> registerUser()
         }
     }
@@ -107,13 +108,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterVM>(),
     }
 
     private fun handleRegisterSuccess() {
-        val dialog = RegisterSuccessDialog(requireContext())
-        dialog.setCallBack(this)
-        dialog.show()
-    }
-
-    override fun onLoginNow() {
-        callBack.showFragment(LoginFragment.TAG, null, false)
+        callBack.showFragment(OtpVerificationFragment.TAG, binding.edtEmail.text.toString().trim(), true)
     }
 
 }

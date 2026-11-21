@@ -8,7 +8,8 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
     // Android Emulator reaches services on the host through 10.0.2.2.
     // For a physical phone, replace this with the computer's LAN address.
-    private const val BASE_URL = "http://10.0.2.2:8080/api/"
+    //private const val BASE_URL = "http://10.0.2.2:8081/api/"
+    private const val BASE_URL = "http://10.65.252.174:8081/api/"
 
     private val okHttp by lazy {
         OkHttpClient.Builder()

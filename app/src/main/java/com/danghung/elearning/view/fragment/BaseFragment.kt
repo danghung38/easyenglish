@@ -97,15 +97,17 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
         callBack.hideLoading()
         callBack.hideLoad()
 
-        if (code == 401) {
+        val requiresSession = viewModel.requiresAuthenticatedSession(key)
+        if (code == 401 && requiresSession) {
             if (key == BaseViewModel.REFRESH_TOKEN) {
                 forceLogout()
                 return
             }
 
             val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
+            val refreshToken = CommonUtils.getInstance().getPref(LoginVM.KEY_REFRESH_TOKEN)
 
-            if (!token.isNullOrBlank()) {
+            if (!token.isNullOrBlank() || !refreshToken.isNullOrBlank()) {
                 viewModel.refreshToken()
             } else {
                 forceLogout()
@@ -120,13 +122,21 @@ abstract class BaseFragment<V: ViewBinding, M: BaseViewModel> : Fragment(), View
             dialog.show()
         } else {
             val error = data as? ApiErrorRes
-            notify(error?.message ?: getString(R.string.txt_err_expired_login))
+            val message = if (requiresSession) {
+                error?.message ?: getString(R.string.txt_err_expired_login)
+            } else if (code == 401 || code == 999) {
+                getString(R.string.txt_registration_request_failed)
+            } else {
+                error?.message ?: getString(R.string.txt_registration_request_failed)
+            }
+            notify(message)
             handleApiError(key, code, error)
         }
     }
 
     private fun forceLogout() {
         CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+        CommonUtils.getInstance().clearPref(LoginVM.KEY_REFRESH_TOKEN)
         CommonUtils.getInstance().clearPref(SecurityFragment.KEY_LOGIN_FINGER)
         notify(R.string.txt_err_expired_login)
         callBack.showFragment(LoginFragment.TAG, null, false)

@@ -2,16 +2,39 @@ package com.danghung.elearning.viewmodel
 
 import com.danghung.elearning.api.UserApi
 import com.danghung.elearning.api.req.UserCreationReq
+import com.danghung.elearning.api.req.ResendVerificationReq
+import com.danghung.elearning.api.req.VerifyOtpReq
 import com.danghung.elearning.util.UserInputValidator
 
 class RegisterVM : BaseViewModel() {
     companion object {
         const val CREATE_USER = "CREATE_USER"
+        const val VERIFY_REGISTER = "VERIFY_REGISTER"
+        const val RESEND_VERIFICATION = "RESEND_VERIFICATION"
     }
+
+    override fun requiresAuthenticatedSession(key: String): Boolean =
+        key != CREATE_USER && key != VERIFY_REGISTER && key != RESEND_VERIFICATION
 
     fun register(req: UserCreationReq) {
         executeApi {
             api(UserApi::class.java).createUser(req).enqueue(initHandleResponse(CREATE_USER))
+        }
+    }
+
+    fun verifyOtp(otp: String) {
+        executeApi {
+            api(UserApi::class.java)
+                .verifyRegister(VerifyOtpReq(otp))
+                .enqueue(initHandleResponse(VERIFY_REGISTER))
+        }
+    }
+
+    fun resendVerification(email: String) {
+        executeApi {
+            api(UserApi::class.java)
+                .resendVerification(ResendVerificationReq(email))
+                .enqueue(initHandleResponse(RESEND_VERIFICATION))
         }
     }
 
@@ -49,6 +72,9 @@ class RegisterVM : BaseViewModel() {
         when (key) {
             CREATE_USER -> {
                 callBack?.apiSuccess(CREATE_USER, null)
+            }
+            VERIFY_REGISTER, RESEND_VERIFICATION -> {
+                callBack?.apiSuccess(key ?: "", null)
             }
             else -> {
                 super.handleSuccess(key, data)

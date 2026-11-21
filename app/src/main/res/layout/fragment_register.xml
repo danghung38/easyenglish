@@ -530,11 +530,27 @@
             android:background="@color/color_line" />
 
         <TextView
+            android:id="@+id/btnVerifyExistingAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minHeight="48dp"
+            android:paddingHorizontal="18dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/font_inter"
+            android:gravity="center"
+            android:text="@string/txt_verify_existing_account"
+            android:textColor="@color/color_app"
+            android:textFontWeight="700"
+            android:textSize="14sp" />
+
+        <TextView
             android:id="@+id/tvHaveAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="25dp"
             android:clickable="true"
             android:focusable="true"

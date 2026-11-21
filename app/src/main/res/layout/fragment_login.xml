@@ -192,13 +192,11 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="15dp"
-            android:background="@drawable/bg_login_more"
             android:clickable="true"
             android:focusable="true"
             android:padding="2dp"
             android:src="@drawable/ic_fingerprint"
-            android:visibility="gone"
-            app:tint="@color/color_app"
+            android:visibility="visible"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 
@@ -219,6 +217,7 @@
         android:layout_height="wrap_content">
 
         <TableRow
+            android:id="@+id/btnGoogleLogin"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginEnd="30dp"

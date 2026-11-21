@@ -35,13 +35,18 @@ abstract class BaseViewModel : ViewModel() {
     protected val token: String?
         get() = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
 
+    protected val storedRefreshToken: String?
+        get() = CommonUtils.getInstance().getPref(LoginVM.KEY_REFRESH_TOKEN)
+
     private var lastApiCall: (() -> Unit)? = null
-    private var pendingApiCallAfterRefresh: (() -> Unit)? = null
+    private val pendingApiCalls = mutableListOf<() -> Unit>()
     private var isRefreshingToken = false
 
     fun setOnCallBack(callBack: OnAPICallBack) {
         this.callBack = callBack
     }
+
+    open fun requiresAuthenticatedSession(key: String): Boolean = true
 
     fun retryLastApi() {
         lastApiCall?.invoke()
@@ -53,26 +58,27 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     fun refreshToken() {
-        val oldToken = token
+        val refreshToken = storedRefreshToken
 
-        if (oldToken.isNullOrBlank()) {
+        if (refreshToken.isNullOrBlank()) {
             callBack?.apiError(REFRESH_TOKEN, 401, null)
             return
         }
 
         if (isRefreshingToken) {
+            lastApiCall?.let { pendingApiCalls.add(it) }
             return
         }
 
+        lastApiCall?.let { pendingApiCalls.add(it) }
         isRefreshingToken = true
 
         // Lưu API cũ bị lỗi 401 để refresh xong gọi lại.
-        pendingApiCallAfterRefresh = lastApiCall
 
         // Không dùng executeApi ở đây.
         // Vì nếu dùng executeApi, lastApiCall sẽ bị ghi đè thành API refresh.
         api(AuthApi::class.java)
-            .refresh(RefreshReq(oldToken))
+            .refresh(RefreshReq(refreshToken))
             .enqueue(initHandleResponse(REFRESH_TOKEN))
     }
 
@@ -148,7 +154,7 @@ abstract class BaseViewModel : ViewModel() {
     protected open fun handleException(key: String?, t: Throwable) {
         if (key == REFRESH_TOKEN) {
             isRefreshingToken = false
-            pendingApiCallAfterRefresh = null
+            pendingApiCalls.clear()
         }
 
         callBack?.apiError(key ?: "", 999, t.message)
@@ -157,7 +163,7 @@ abstract class BaseViewModel : ViewModel() {
     protected open fun handleFail(key: String?, code: Int, errorBody: ResponseBody?) {
         if (key == REFRESH_TOKEN) {
             isRefreshingToken = false
-            pendingApiCallAfterRefresh = null
+            pendingApiCalls.clear()
         }
 
         val apiError = try {
@@ -180,20 +186,24 @@ abstract class BaseViewModel : ViewModel() {
                 isRefreshingToken = false
 
                 val res = data as? ApiRes<AuthRes>
-                val newToken = res?.result?.token
+                val newAccessToken = res?.result?.accessToken
+                val newRefreshToken = res?.result?.refreshToken
 
-                if (newToken.isNullOrBlank()) {
-                    pendingApiCallAfterRefresh = null
+                if (newAccessToken.isNullOrBlank() || newRefreshToken.isNullOrBlank()) {
+                    CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+                    CommonUtils.getInstance().clearPref(LoginVM.KEY_REFRESH_TOKEN)
+                    pendingApiCalls.clear()
                     callBack?.apiError(REFRESH_TOKEN, 401, null)
                     return
                 }
 
-                CommonUtils.getInstance().savePref(LoginVM.KEY_TOKEN, newToken)
+                CommonUtils.getInstance().savePref(LoginVM.KEY_TOKEN, newAccessToken)
+                CommonUtils.getInstance().savePref(LoginVM.KEY_REFRESH_TOKEN, newRefreshToken)
 
-                val apiNeedRetry = pendingApiCallAfterRefresh
-                pendingApiCallAfterRefresh = null
+                val apiNeedRetry = pendingApiCalls.toList()
+                pendingApiCalls.clear()
 
-                apiNeedRetry?.invoke()
+                apiNeedRetry.forEach { it.invoke() }
                 return
             }
         }

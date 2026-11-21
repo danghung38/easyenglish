@@ -1,7 +1,11 @@
 package com.danghung.elearning.api
 
 import com.danghung.elearning.api.req.ChangePasswordReq
+import com.danghung.elearning.api.req.ForgotPasswordReq
+import com.danghung.elearning.api.req.ResendVerificationReq
+import com.danghung.elearning.api.req.ResetPasswordReq
 import com.danghung.elearning.api.req.UserCreationReq
+import com.danghung.elearning.api.req.VerifyOtpReq
 import com.danghung.elearning.api.res.ApiRes
 import com.danghung.elearning.api.res.UserRes
 import com.danghung.elearning.api.res.UserUpdateRes
@@ -19,6 +23,18 @@ import retrofit2.http.Part
 interface UserApi {
     @POST("users")
     fun createUser(@Body request: UserCreationReq): Call<ApiRes<UserRes>>
+
+    @POST("users/verify-register")
+    fun verifyRegister(@Body request: VerifyOtpReq): Call<ApiRes<Any>>
+
+    @POST("users/resend-verification")
+    fun resendVerification(@Body request: ResendVerificationReq): Call<ApiRes<Any>>
+
+    @POST("users/forgot-password")
+    fun forgotPassword(@Body request: ForgotPasswordReq): Call<ApiRes<Any>>
+
+    @POST("users/reset-password")
+    fun resetPassword(@Body request: ResetPasswordReq): Call<ApiRes<Any>>
 
     @GET("users/myInfo")
     fun getMyInfo(@Header("Authorization") token: String): Call<ApiRes<UserRes>>

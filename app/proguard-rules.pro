@@ -17,11 +17,6 @@
 -keep class com.danghung.elearning.api.res.** { *; }
 -keep class com.danghung.elearning.api.req.** { *; }
 
-# Nếu bạn có package lưu Entity của Room Database (ví dụ: database/entity), giữ lại:
--keep class * extends androidx.room.RoomDatabase
--keep @androidx.room.Entity class *
--dontwarn androidx.room.paging.**
-
 # 4. Cấu hình chuẩn cho Retrofit 2 & OkHttp 4
 -keepattributes Signature
 -keepattributes *Annotation*

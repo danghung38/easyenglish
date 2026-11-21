@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
 
     override fun onResume() {
         super.onResume()
-        // verifyDeviceSecurity()
+        //verifyDeviceSecurity()
     }
 
     private fun setupSessionTimeout() {
@@ -50,6 +50,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
                 ).show()
             } else {
                 CommonUtils.getInstance().clearPref(LoginVM.KEY_TOKEN)
+                CommonUtils.getInstance().clearPref(LoginVM.KEY_REFRESH_TOKEN)
                 Toast.makeText(
                     this,
                     "Session expired due to inactivity. Please log in again.",

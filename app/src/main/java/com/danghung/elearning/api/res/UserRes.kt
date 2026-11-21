@@ -10,5 +10,6 @@ data class UserRes(
     val dob: String?,
     val bandsTarget: Double?,
     val gender: String?,
-    val avatar: String?
+    val avatar: String?,
+    val is2FA: Boolean = false
 ): Serializable

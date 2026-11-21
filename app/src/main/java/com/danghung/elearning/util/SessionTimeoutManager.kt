@@ -10,7 +10,7 @@ import com.danghung.elearning.viewmodel.LoginVM
 
 object SessionTimeoutManager : DefaultLifecycleObserver {
 
-    // Thời gian tối đa cho phép chạy nền (ví dụ: 5 phút = 5 * 60 * 1000L)
+    // Thời gian tối đa cho phép chạy nền (ví dụ: 1 phút)
     private const val TIMEOUT_MS = 1 * 60 * 1000L
 
     private var backgroundTimestampMs: Long = 0L
@@ -23,8 +23,7 @@ object SessionTimeoutManager : DefaultLifecycleObserver {
 
     // Gọi khi toàn bộ app bị ẩn xuống nền (bấm Home, tắt màn hình, chuyển app khác)
     override fun onStop(owner: LifecycleOwner) {
-        val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
-        if (!token.isNullOrBlank()) {
+        if (hasStoredSession()) {
             backgroundTimestampMs = SystemClock.elapsedRealtime()
         }
     }
@@ -36,8 +35,7 @@ object SessionTimeoutManager : DefaultLifecycleObserver {
         val elapsedMs = SystemClock.elapsedRealtime() - backgroundTimestampMs
         backgroundTimestampMs = 0L
 
-        val token = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
-        if (token.isNullOrBlank()) return
+        if (!hasStoredSession()) return
 
         if (elapsedMs >= TIMEOUT_MS) {
             val hasBiometric = CommonUtils.getInstance().getPref(KEY_LOGIN_FINGER) != null
@@ -48,5 +46,11 @@ object SessionTimeoutManager : DefaultLifecycleObserver {
     // Reset mốc thời gian khi user chủ động đăng xuất
     fun reset() {
         backgroundTimestampMs = 0L
+    }
+
+    private fun hasStoredSession(): Boolean {
+        val accessToken = CommonUtils.getInstance().getPref(LoginVM.KEY_TOKEN)
+        val refreshToken = CommonUtils.getInstance().getPref(LoginVM.KEY_REFRESH_TOKEN)
+        return !accessToken.isNullOrBlank() || !refreshToken.isNullOrBlank()
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/txt_2fa_login_title"
+            android:textColor="@color/color_app"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/txt_2fa_login_description"
+            android:textColor="@color/color_splash_des"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtLoginTwoFactorCode"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_edt_register"
+            android:gravity="center"
+            android:hint="@string/txt_2fa_code_hint"
+            android:inputType="number"
+            android:maxLength="6"
+            android:letterSpacing="0.25"
+            android:fontFamily="@font/font_inter"
+            android:textColor="@color/color_text_app"
+            android:textColorHint="@color/color_splash_des"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/btnLoginTwoFactor"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_btn_login"
+            android:gravity="center"
+            android:fontFamily="@font/font_inter"
+            android:textSize="14sp"
+            android:text="@string/txt_2fa_verify_login"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnCancelLoginTwoFactor"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:fontFamily="@font/font_inter"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/txt_cancel"
+            android:textColor="@color/color_splash_des"
+            android:textStyle="bold" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
