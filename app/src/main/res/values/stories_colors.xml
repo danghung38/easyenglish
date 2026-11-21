@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="story_canvas">#FBFAF7</color>
+    <color name="story_panel">#F2EEE5</color>
+    <color name="story_control_ink">#4D463B</color>
+    <color name="story_beginner_surface">#DDEEE2</color>
+    <color name="story_beginner_ink">#285842</color>
+    <color name="story_intermediate_surface">#F8E7D3</color>
+    <color name="story_intermediate_ink">#854717</color>
+    <color name="story_advanced_surface">#ECE3F5</color>
+    <color name="story_advanced_ink">#62427A</color>
+</resources>

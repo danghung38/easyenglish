@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/story_canvas"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="16dp">
+
+        <ImageButton
+            android:id="@+id/ivBack"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/txt_story_back"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/StoryTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textFontWeight="600"
+            android:accessibilityHeading="true"
+            android:paddingVertical="6dp"
+            android:text="@string/txt_stories" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/storyScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <ImageView
+                    android:id="@+id/ivStoryCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="185dp"
+                    android:background="@drawable/bg_story_surface"
+                    android:clipToOutline="true"
+                    android:importantForAccessibility="no"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvTranslatedTitle"
+                    style="@style/StoryTitle"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/color_text_app" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvReadingLanguage"
+                        style="@style/StoryText"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:accessibilityHeading="true"
+                        android:text="@string/txt_story_english"
+                        android:textColor="@color/story_control_ink"
+                        android:textFontWeight="700" />
+
+                    <TextView
+                        android:id="@+id/btnTranslate"
+                        style="@style/StoryAction"
+                        android:text="@string/txt_story_show_all_translations" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnStoryParagraphs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tvStoryText"
+                    style="@style/StoryText"
+                    android:layout_marginTop="12dp"
+                    android:lineSpacingExtra="5dp"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/lnStoryLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:indeterminateTint="@color/story_control_ink" />
+
+            <TextView
+                style="@style/StoryText"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/txt_story_loading" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnStoryError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvStoryError"
+                style="@style/StoryText"
+                android:gravity="center"
+                android:text="@string/txt_story_load_error" />
+
+            <TextView
+                android:id="@+id/btnRetry"
+                style="@style/StoryAction"
+                android:layout_marginTop="12dp"
+                android:text="@string/txt_retry" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

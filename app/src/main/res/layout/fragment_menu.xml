@@ -128,6 +128,36 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lnStories"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivStories"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:paddingVertical="1dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_stories" />
+
+                <TextView
+                    android:id="@+id/tvStories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_inter"
+                    android:gravity="center"
+                    android:text="@string/txt_stories"
+                    android:textColor="@color/color_splash_des"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/lnProfile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

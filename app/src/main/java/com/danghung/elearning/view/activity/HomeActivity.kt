@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, CommomVM>() {
 
     override fun onResume() {
         super.onResume()
-        //verifyDeviceSecurity()
+        verifyDeviceSecurity()
     }
 
     private fun setupSessionTimeout() {

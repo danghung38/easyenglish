@@ -336,6 +336,12 @@
 
                 </TableRow>
 
+                <include
+                    android:id="@+id/homeDiscovery"
+                    layout="@layout/view_home_discovery"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
         </LinearLayout>
 

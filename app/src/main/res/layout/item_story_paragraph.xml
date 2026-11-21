@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/tvParagraph"
+        style="@style/StoryText"
+        android:lineSpacingExtra="5dp"
+        android:textIsSelectable="true"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/btnParagraphTranslation"
+        style="@style/StoryAction"
+        android:layout_marginTop="6dp"
+        android:background="@null"
+        android:clipToOutline="false"
+        android:paddingHorizontal="8dp"
+        android:text="@string/txt_story_show_translation"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvParagraphTranslation"
+        style="@style/StoryText"
+        android:background="@drawable/bg_story_surface"
+        android:lineSpacingExtra="4dp"
+        android:padding="14dp"
+        android:textIsSelectable="true"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+</LinearLayout>

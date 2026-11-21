@@ -44,3 +44,11 @@
 -keep class * extends com.bumptech.glide.module.AppGlideModule {
     <init>(...);
 }
+
+# The menu and activity instantiate these fragments by class name.
+-keep,allowobfuscation class com.danghung.elearning.view.fragment.StoriesFragment {
+    public <init>();
+}
+-keep,allowobfuscation class com.danghung.elearning.view.fragment.StoryReaderFragment {
+    public <init>();
+}

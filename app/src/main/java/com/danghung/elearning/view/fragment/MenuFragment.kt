@@ -22,7 +22,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
         const val TYPE_EXAMS: Int = 2
         const val TYPE_LEARN: Int = 3
         const val TYPE_PROFILE: Int = 4
+        const val TYPE_STORIES: Int = 5
     }
+
+    private var selectedMenuType: Int? = null
 
     override fun getClassVM(): Class<CommomVM> = CommomVM::class.java
 
@@ -36,16 +39,10 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
         binding.lnHome.setOnClickListener(this)
         binding.lnExams.setOnClickListener(this)
         binding.lnLearn.setOnClickListener(this)
+        binding.lnStories.setOnClickListener(this)
         binding.lnProfile.setOnClickListener(this)
 
-        //check quay về từ màn khác
-        val menuType = data as? Int
-        if (menuType != null) {
-            showScreen(menuType)
-        } else {
-            showScreen(TYPE_HOME)
-        }
-
+        showScreen(selectedMenuType ?: (data as? Int) ?: TYPE_HOME)
     }
 
     override fun clickView(v: View) {
@@ -53,17 +50,20 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
             binding.lnHome.id -> showScreen(TYPE_HOME)
             binding.lnExams.id -> showScreen(TYPE_EXAMS)
             binding.lnLearn.id -> showScreen(TYPE_LEARN)
+            binding.lnStories.id -> showScreen(TYPE_STORIES)
             binding.lnProfile.id -> showScreen(TYPE_PROFILE)
         }
     }
 
     private fun showScreen(type: Int) {
+        selectedMenuType = type
         val colorNor = ContextCompat.getColor(requireContext(), R.color.color_nor)
         val tintNor = ColorStateList.valueOf(colorNor)
         listOf(
             binding.ivHome to binding.tvHome,
             binding.ivExams to binding.tvExams,
             binding.ivLearn to binding.tvLearn,
+            binding.ivStories to binding.tvStories,
             binding.ivProfile to binding.tvProfile
         ).forEach { (iv, tv) ->
             iv.imageTintList = tintNor
@@ -73,6 +73,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding, CommomVM>(), OnMainCallba
             TYPE_HOME -> gotoScreen(binding.ivHome, binding.tvHome, R.string.txt_title_home, HomeFragment.TAG)
             TYPE_EXAMS -> gotoScreen(binding.ivExams, binding.tvExams, R.string.txt_title_exams, ExamsFragment.TAG)
             TYPE_LEARN -> gotoScreen(binding.ivLearn, binding.tvLearn, R.string.txt_title_learn, LearnFragment.TAG)
+            TYPE_STORIES -> gotoScreen(binding.ivStories, binding.tvStories, R.string.txt_stories, StoriesFragment.TAG)
             TYPE_PROFILE -> gotoScreen(binding.ivProfile, binding.tvProfile, R.string.txt_title_profile, ProfileFragment.TAG)
         }
     }

@@ -1,6 +1,7 @@
 package com.danghung.elearning.view.fragment
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.Handler
 import android.os.Looper
@@ -9,20 +10,30 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.annotation.DimenRes
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.danghung.elearning.R
+import com.danghung.elearning.api.res.ExamRes
 import com.danghung.elearning.databinding.FragmentHomeBinding
+import com.danghung.elearning.model.BilingualStory
 import com.danghung.elearning.model.CreItem
+import com.danghung.elearning.model.HomeDailyContent
+import com.danghung.elearning.model.HomeWord
 import com.danghung.elearning.view.adapter.CreAdapter
 import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_EXAMS
-import com.danghung.elearning.viewmodel.CommomVM
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_LEARN
+import com.danghung.elearning.view.fragment.MenuFragment.Companion.TYPE_STORIES
+import com.danghung.elearning.viewmodel.HomeVM
+import com.google.android.material.chip.Chip
+import java.time.LocalDate
 import kotlin.math.abs
 
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
     companion object {
         val TAG: String = HomeFragment::class.java.name
     }
@@ -33,7 +44,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
     private val autoScrollDelay = 3000L
     private var isScrollingForward = true  // Track hướng scroll
 
-    override fun getClassVM(): Class<CommomVM> = CommomVM::class.java
+    override fun getClassVM(): Class<HomeVM> = HomeVM::class.java
 
     override fun initViewBinding(
         inflater: LayoutInflater,
@@ -51,6 +62,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
 
         // Gọi hàm setup cho Chatbot
         setupChatbotFloatingButton()
+        setupDiscovery()
     }
 
     override fun clickView(v: View) {
@@ -67,6 +79,130 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, CommomVM>() {
             }
             else -> callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false)
         }
+    }
+
+    private fun setupDiscovery() {
+        binding.homeDiscovery.btnLearn.setOnClickListener {
+            callBack.showFragment(MenuFragment.TAG, TYPE_LEARN, false)
+        }
+        bindDailyPractice()
+        renderFeaturedStory(null)
+        viewModel.featuredStory.observe(viewLifecycleOwner) { renderFeaturedStory(it) }
+        viewModel.loadFeaturedStory()
+        renderFeaturedExam(null)
+        viewModel.exams.observe(viewLifecycleOwner) { renderFeaturedExam(it.firstOrNull()) }
+        viewModel.loadExams()
+    }
+
+    private fun renderFeaturedStory(story: BilingualStory?) = with(binding.homeDiscovery) {
+        tvFeaturedStoryTitle.text = story?.title ?: getString(R.string.txt_stories)
+        tvFeaturedStoryTranslation.text = story?.titleVi ?: getString(R.string.home_story_preview)
+        tvFeaturedStoryDetails.isVisible = story != null
+        if (story != null) {
+            tvFeaturedStoryDetails.setText(story.level.label)
+            tvFeaturedStoryDetails.setTextColor(ContextCompat.getColor(requireContext(), story.level.ink))
+        }
+        ivFeaturedStoryCover.backgroundTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(requireContext(), story?.level?.surface ?: R.color.story_panel)
+        )
+
+        Glide.with(this@HomeFragment)
+            .load(story?.imageUrl)
+            .placeholder(R.drawable.ic_story_cover_default)
+            .fallback(R.drawable.ic_story_cover_default)
+            .error(R.drawable.ic_story_cover_default)
+            .into(ivFeaturedStoryCover)
+
+        btnFeaturedStory.setOnClickListener {
+            if (story != null) {
+                callBack.showFragment(StoryReaderFragment.TAG, story.id, true)
+            } else {
+                callBack.showFragment(MenuFragment.TAG, TYPE_STORIES, false)
+            }
+        }
+        btnBrowseStories.setOnClickListener {
+            callBack.showFragment(MenuFragment.TAG, TYPE_STORIES, false)
+        }
+    }
+
+    private fun renderFeaturedExam(exam: ExamRes?) = with(binding.homeDiscovery) {
+        if (exam == null) {
+            tvFeaturedTitle.setText(R.string.home_featured_default_title)
+            tvFeaturedDetails.setText(R.string.home_featured_default_details)
+            btnFeatured.setText(R.string.home_browse_exams)
+            btnFeatured.setOnClickListener { callBack.showFragment(MenuFragment.TAG, TYPE_EXAMS, false) }
+            return@with
+        }
+
+        val skillCount = exam.examParts.map { it.skillType }.distinct().size
+        val skills = resources.getQuantityString(R.plurals.home_featured_skills, skillCount, skillCount)
+        val duration = exam.totalDuration
+        tvFeaturedTitle.text = exam.title
+        tvFeaturedDetails.text = if (duration > 0) {
+            val minutes = resources.getQuantityString(R.plurals.home_featured_minutes, duration, duration)
+            getString(R.string.home_featured_details, skills, minutes)
+        } else {
+            skills
+        }
+        btnFeatured.setText(R.string.home_featured_open)
+        btnFeatured.setOnClickListener { callBack.showFragment(PracticeFragment.TAG, exam, false) }
+    }
+
+    private fun bindDailyPractice() = with(binding.homeDiscovery) {
+        val day = LocalDate.now().toEpochDay()
+        val lesson = HomeDailyContent.forDay(day)
+        tvDailyWord.setText(lesson.word.word)
+        tvDailyDefinition.setText(lesson.word.definition)
+        tvDailyExample.setText(lesson.word.example)
+        btnTranslateWord.setOnClickListener {
+            callBack.showFragment(TranslationFragment.TAG, getString(lesson.word.word), true)
+        }
+        tvQuizPrompt.text = getString(R.string.home_quiz_prompt, getString(lesson.answer.prompt))
+
+        val selectedWord = viewModel.answerFor(day)
+        quizChoices.removeAllViews()
+        for (choice in lesson.choices) {
+            val chip = createChoiceChip(choice)
+            quizChoices.addView(chip)
+            chip.isChecked = choice.word == selectedWord
+            chip.setOnClickListener {
+                chip.isChecked = true
+                viewModel.selectAnswer(day, choice.word)
+                renderQuizFeedback(choice.word, lesson.answer)
+            }
+        }
+        renderQuizFeedback(selectedWord, lesson.answer)
+    }
+
+    private fun createChoiceChip(choice: HomeWord): Chip {
+        val states = arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf())
+        val accent = ContextCompat.getColor(requireContext(), R.color.home_quiz_ink)
+        val pale = ContextCompat.getColor(requireContext(), R.color.home_quiz_choice)
+        return Chip(requireContext()).apply {
+            id = View.generateViewId()
+            setText(choice.word)
+            isCheckable = true
+            isCheckedIconVisible = false
+            setEnsureMinTouchTargetSize(true)
+            chipBackgroundColor = ColorStateList(states, intArrayOf(accent, pale))
+            setTextColor(ColorStateList(states, intArrayOf(android.graphics.Color.WHITE, accent)))
+        }
+    }
+
+    private fun renderQuizFeedback(selectedWord: Int?, answer: HomeWord) {
+        val feedback = binding.homeDiscovery.tvQuizFeedback
+        feedback.isVisible = selectedWord != null
+        if (selectedWord == null) return
+
+        val isCorrect = selectedWord == answer.word
+        feedback.text = if (isCorrect) {
+            getString(R.string.home_quiz_correct, getString(answer.definition))
+        } else {
+            getString(R.string.home_quiz_incorrect)
+        }
+        feedback.setTextColor(
+            ContextCompat.getColor(requireContext(), if (isCorrect) R.color.home_correct else R.color.home_incorrect)
+        )
     }
 
     private fun setupChatbotFloatingButton() {

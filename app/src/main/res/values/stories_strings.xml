@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txt_stories">Stories</string>
+    <string name="txt_stories_intro">Read a story at your level in English, then check it in Vietnamese.</string>
+    <string name="txt_story_all">All</string>
+    <string name="txt_story_beginner">Beginner</string>
+    <string name="txt_story_intermediate">Intermediate</string>
+    <string name="txt_story_advanced">Advanced</string>
+    <string name="txt_story_back">Back to stories</string>
+    <string name="txt_story_loading">Loading story…</string>
+    <string name="txt_story_list_error">Couldn\'t load stories. Check your connection and try again.</string>
+    <string name="txt_story_empty">There are no stories at this level yet.</string>
+    <string name="txt_story_load_error">Couldn\'t load this story. Check your connection and try again.</string>
+    <string name="txt_story_not_found">This story is no longer available.</string>
+    <string name="txt_story_english">English</string>
+    <string name="txt_story_vietnamese">Vietnamese</string>
+    <string name="txt_story_show_translation">Show Vietnamese</string>
+    <string name="txt_story_hide_translation">Hide Vietnamese</string>
+    <string name="txt_story_show_all_translations">Show all translations</string>
+    <string name="txt_story_hide_all_translations">Hide all translations</string>
+    <string name="txt_story_show_english">Show English</string>
+</resources>

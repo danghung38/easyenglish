@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.danghung.elearning.R
 import com.danghung.elearning.api.res.VocabularyRes
 import com.danghung.elearning.record.AndroidAudioPlayer
+import com.danghung.elearning.util.GoogleTranslateSpeech
 
 class VocabularyAdapter(
     private val items: List<VocabularyRes>,
@@ -93,8 +94,7 @@ class VocabularyAdapter(
             btnPrevious.setOnClickListener { animateAndRun(it, listener::onPrevious) }
             ivSound.setOnClickListener { view ->
                 animateAndRun(view) {
-                    val url = "https://translate.google.com/translate_tts?ie=UTF-8&q=${item.word}&tl=en&client=tw-ob"
-                    audioPlayer.playUrl(url)
+                    audioPlayer.playUrl(GoogleTranslateSpeech.englishUrl(item.word))
                 }
             }
             btnFlip.setOnClickListener { view -> animateAndRun(view, ::flipCard) }

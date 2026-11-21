@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_browse_exams">Browse exams</string>
+    <string name="home_daily_title">Daily practice</string>
+    <string name="home_word_label">WORD OF THE DAY</string>
+    <string name="home_translate_word">Translate this word</string>
+    <string name="home_quiz_title">Quick check</string>
+    <string name="home_quiz_prompt">Choose the word that completes the sentence:\n%1$s</string>
+    <string name="home_quiz_correct">Correct! %1$s</string>
+    <string name="home_quiz_incorrect">Try another word.</string>
+    <string name="home_featured_default_title">Find your next exam</string>
+    <string name="home_featured_default_details">Explore the library to find a practice test.</string>
+    <string name="home_featured_open">Open exam</string>
+    <plurals name="home_featured_skills">
+        <item quantity="one">%d skill</item>
+        <item quantity="other">%d skills</item>
+    </plurals>
+    <plurals name="home_featured_minutes">
+        <item quantity="one">%d min</item>
+        <item quantity="other">%d min</item>
+    </plurals>
+    <string name="home_featured_details">%1$s • %2$s</string>
+    <string name="home_tools_title">Explore more</string>
+    <string name="home_story_label">BILINGUAL STORY</string>
+    <string name="home_browse_stories">Browse stories</string>
+    <string name="home_story_preview">English stories with Vietnamese translations</string>
+    <string name="home_learn_title">Vocabulary &amp; history</string>
+    <string name="home_learn_details">Review flashcards and past practice.</string>
+
+    <string name="home_word_resilient">resilient</string>
+    <string name="home_definition_resilient">Able to recover after difficulty or change.</string>
+    <string name="home_example_resilient">The community stayed resilient and rebuilt after the flood.</string>
+    <string name="home_prompt_resilient">The community proved _____ by quickly recovering after the flood.</string>
+
+    <string name="home_word_concise">concise</string>
+    <string name="home_definition_concise">Clear and brief, without unnecessary words.</string>
+    <string name="home_example_concise">Her concise summary covered the main ideas in two sentences.</string>
+    <string name="home_prompt_concise">Keep your summary _____ by cutting every unnecessary word.</string>
+
+    <string name="home_word_plausible">plausible</string>
+    <string name="home_definition_plausible">Reasonable enough to believe, even without proof.</string>
+    <string name="home_example_plausible">The witness gave a plausible explanation for the delay.</string>
+    <string name="home_prompt_plausible">His explanation sounds _____, but we still need evidence to confirm it.</string>
+
+    <string name="home_word_meticulous">meticulous</string>
+    <string name="home_definition_meticulous">Very careful about small details.</string>
+    <string name="home_example_meticulous">A meticulous editor checks every date, name and punctuation mark.</string>
+    <string name="home_prompt_meticulous">She was _____ in her research, checking every figure against the original report.</string>
+
+    <string name="home_word_versatile">versatile</string>
+    <string name="home_definition_versatile">Useful for many different tasks or situations.</string>
+    <string name="home_example_versatile">A tablet is a versatile tool for reading, writing and sketching.</string>
+    <string name="home_prompt_versatile">This tool is _____ enough to cut, drill and polish several materials.</string>
+
+    <string name="home_word_coherent">coherent</string>
+    <string name="home_definition_coherent">Logical and easy to follow because the ideas connect.</string>
+    <string name="home_example_coherent">The essay presented a coherent argument from beginning to end.</string>
+    <string name="home_prompt_coherent">The paragraphs form a _____ argument, with each idea leading logically to the next.</string>
+</resources>

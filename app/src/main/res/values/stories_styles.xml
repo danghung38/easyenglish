@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="StoryText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_text_app</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="StoryTitle" parent="StoryText">
+        <item name="android:textColor">@color/color_app</item>
+        <item name="fontFamily">@font/font_inter</item>
+        <item name="android:textFontWeight">750</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="StoryAction" parent="StoryText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_story_surface</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:textColor">@color/story_control_ink</item>
+        <item name="android:textFontWeight">650</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

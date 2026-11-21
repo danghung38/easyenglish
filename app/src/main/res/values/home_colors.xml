@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="home_ink">#132A50</color>
+    <color name="home_muted">#535862</color>
+    <color name="home_accent">#194DB6</color>
+    <color name="home_card_line">#DEE8F8</color>
+    <color name="home_pale">#EAF3FF</color>
+    <color name="home_chip">#DCEAFF</color>
+    <color name="home_correct">#14634A</color>
+    <color name="home_incorrect">#A1342D</color>
+
+    <color name="home_word_surface">#EAF5EC</color>
+    <color name="home_word_action">#D5EBDD</color>
+    <color name="home_word_ink">#295941</color>
+    <color name="home_quiz_surface">#FFF3E2</color>
+    <color name="home_quiz_choice">#F7E2C3</color>
+    <color name="home_quiz_ink">#7E481B</color>
+    <color name="home_story_surface">#F3EDFA</color>
+    <color name="home_story_action">#E8DCF3</color>
+    <color name="home_story_ink">#65447F</color>
+    <color name="home_exam_surface">#EBF3FD</color>
+    <color name="home_learn_surface">#FBEFF0</color>
+    <color name="home_learn_action">#F3DBE0</color>
+    <color name="home_learn_ink">#824254</color>
+</resources>
