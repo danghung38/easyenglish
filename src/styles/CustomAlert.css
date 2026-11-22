@@ -1,0 +1,233 @@
+/* ===== Custom Alert Container ===== */
+.custom-alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+  pointer-events: none;
+}
+
+/* ===== Alert Card ===== */
+.custom-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-left: 4px solid;
+  animation: slideInRight 0.3s ease-out;
+  pointer-events: all;
+  min-width: 320px;
+  transition: all 0.3s ease;
+}
+
+.custom-alert:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Alert Types ===== */
+.custom-alert-success {
+  border-left-color: #28a745;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+}
+
+.custom-alert-success .custom-alert-icon {
+  color: #28a745;
+}
+
+.custom-alert-error {
+  border-left-color: #dc3545;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+}
+
+.custom-alert-error .custom-alert-icon {
+  color: #dc3545;
+}
+
+.custom-alert-warning {
+  border-left-color: #ffc107;
+  background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
+}
+
+.custom-alert-warning .custom-alert-icon {
+  color: #ffc107;
+}
+
+.custom-alert-info {
+  border-left-color: #17a2b8;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.custom-alert-info .custom-alert-icon {
+  color: #17a2b8;
+}
+
+/* ===== Alert Icon ===== */
+.custom-alert-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+/* ===== Alert Content ===== */
+.custom-alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.custom-alert-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #2c3e50;
+}
+
+.custom-alert-message {
+  font-size: 0.9rem;
+  color: #6c757d;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+/* ===== Close Button ===== */
+.custom-alert-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.custom-alert-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2c3e50;
+}
+
+.custom-alert-close:active {
+  transform: scale(0.9);
+}
+
+/* ===== Animations ===== */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.custom-alert.closing {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+
+/* ===== Progress Bar ===== */
+.custom-alert::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: currentColor;
+  opacity: 0.3;
+  animation: progress 5s linear;
+  border-bottom-left-radius: 12px;
+}
+
+.custom-alert-success::after {
+  background: #28a745;
+}
+
+.custom-alert-error::after {
+  background: #dc3545;
+}
+
+.custom-alert-warning::after {
+  background: #ffc107;
+}
+
+.custom-alert-info::after {
+  background: #17a2b8;
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .custom-alert-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+
+  .custom-alert {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-alert {
+    padding: 12px 16px;
+  }
+
+  .custom-alert-title {
+    font-size: 0.9rem;
+  }
+
+  .custom-alert-message {
+    font-size: 0.85rem;
+  }
+
+  .custom-alert-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ===== Stacking ===== */
+.custom-alert-container > .custom-alert:nth-child(n+4) {
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.custom-alert-container > .custom-alert:nth-child(n+5) {
+  display: none;
+}

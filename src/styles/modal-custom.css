@@ -1,0 +1,9 @@
+/* Custom modal width for better viewing */
+.modal-90w {
+  max-width: 90vw !important;
+  width: 90vw !important;
+}
+
+.modal-90w .modal-content {
+  width: 100%;
+}

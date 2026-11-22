@@ -1,0 +1,367 @@
+/* ===== Topic Grid ===== */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.topic-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.topic-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.topic-card.active {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  border: 2px solid #667eea;
+}
+
+.topic-card-header {
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  gap: 0.5rem;
+}
+
+.topic-card-body {
+  padding: 1rem;
+  text-align: center;
+  background: white;
+}
+
+.topic-card-body h6 {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+/* ===== Progress Bar ===== */
+.vocabulary-progress {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.custom-progress {
+  width: 100%;
+  height: 12px;
+  background: #e9ecef;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.custom-progress-bar {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Flashcard Wrapper ===== */
+.flashcard-wrapper {
+  perspective: 1500px;
+  min-height: 600px;
+  margin-bottom: 2rem;
+}
+
+/* ===== Flashcard Container ===== */
+.flashcard {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+  cursor: pointer;
+}
+
+.flashcard.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard.mastered {
+  box-shadow: 0 0 0 3px #28a745;
+}
+
+/* ===== Flashcard Faces ===== */
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem 2rem;
+  overflow: hidden;
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2px solid #e9ecef;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: rotateY(180deg);
+  color: white;
+}
+
+/* ===== Flashcard Content ===== */
+.flashcard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.flashcard-word {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.flashcard-pronunciation {
+  font-size: 1.6rem;
+  color: #6c757d;
+  margin: 0;
+  font-style: italic;
+}
+
+.audio-button {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.audio-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+.audio-button:active {
+  transform: scale(0.95);
+}
+
+/* ===== Flashcard Back Content ===== */
+.flashcard-meaning-section {
+  margin-bottom: 2.5rem;
+}
+
+.flashcard-meaning {
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.flashcard-example-section {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  max-width: 90%;
+}
+
+.flashcard-example {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===== Flashcard Hint ===== */
+.flashcard-hint {
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===== Controls ===== */
+.flashcard-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-width: 2px;
+  white-space: nowrap;
+}
+
+.control-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.control-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .topic-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .flashcard-wrapper {
+    min-height: 500px;
+  }
+
+  .flashcard {
+    height: 500px;
+  }
+
+  .flashcard-face {
+    padding: 2rem 1.5rem;
+  }
+
+  .flashcard-word {
+    font-size: 2.8rem;
+  }
+
+  .flashcard-pronunciation {
+    font-size: 1.2rem;
+  }
+
+  .flashcard-meaning {
+    font-size: 2.2rem;
+  }
+
+  .flashcard-example {
+    font-size: 1.2rem;
+  }
+
+  .audio-button {
+    width: 60px;
+    height: 60px;
+  }
+
+  .flashcard-controls {
+    flex-direction: column;
+  }
+
+  .control-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .flashcard-wrapper {
+    min-height: 450px;
+  }
+
+  .flashcard {
+    height: 450px;
+  }
+
+  .flashcard-word {
+    font-size: 2.2rem;
+  }
+
+  .flashcard-meaning {
+    font-size: 1.8rem;
+  }
+
+  .flashcard-example {
+    font-size: 1.1rem;
+  }
+
+  .flashcard-example-section {
+    padding: 1.5rem;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vocabulary-progress,
+.flashcard-wrapper {
+  animation: slideInUp 0.5s ease;
+}
+
+/* ===== Loading States ===== */
+.flashcard.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ===== Success State ===== */
+.flashcard.mastered::after {
+  content: '✓';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 50px;
+  height: 50px;
+  background: #28a745;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}

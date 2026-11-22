@@ -1,0 +1,174 @@
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Image, Navbar, Nav, Container, Form } from "react-bootstrap";
+import { useMediaQuery } from "react-responsive";
+import { v4 as uuid } from "uuid";
+// import media files
+import Logo from "../../../assets/images/brand/logo/logo.svg";
+import NavDropdownMain from "./NavDropdownMain";
+import AuthContext from "../../../context/AuthContext";
+import QuickMenu from "./QuickMenu";
+import TakeTestDropdown from "./TakeTestDropdown";
+import { imgixURL } from "../../../utils/siteUtils";
+import LoadingBar from "../LoadingBar/LoadingBar";
+
+const AppNavbar = ({ fixed = false }) => {
+  const isDesktop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+  const isLaptop = useMediaQuery({
+    query: "(min-width: 1024px)",
+  });
+
+  const [expandedMenu, setExpandedMenu] = useState(false);
+  let { user, logoutUser } = useContext(AuthContext);
+  const login = user ? true : false;
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  function isActive(keyword) {
+    const pathArray = window.location.pathname.split("/");
+    return pathArray.includes(keyword);
+  }
+
+  return (
+    <div className={`navbar-default border-bottom navbar-sticky  `}>
+      <Navbar
+        onToggle={(collapsed) => setExpandedMenu(collapsed)}
+        expanded={expandedMenu}
+        expand="lg"
+        className="  "
+        bg="white"
+      >
+        <Container fluid className="px-0 ps-2">
+          <div className="d-flex">
+            <Navbar.Brand as={Link} to="/" className="fw-bold fs-3 text-primary">
+              EngTech
+            </Navbar.Brand>
+            <TakeTestDropdown />
+          </div>
+
+          <Navbar.Toggle aria-controls="basic-navbar-nav">
+            <span className="icon-bar top-bar mt-0"></span>
+            <span className="icon-bar middle-bar"></span>
+            <span className="icon-bar bottom-bar"></span>
+          </Navbar.Toggle>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              {NavbarDefaultRoutes.map((item, index) => {
+                if (item.children === undefined) {
+                  return (
+                    <div className="nav-item mx-3" key={index}>
+                      <Nav.Link as={Link} to={item.link}>
+                        {isActive(item.slug) ? (
+                          <span className="text-primary fw-bold">
+                            {item.menuitem}
+                          </span>
+                        ) : (
+                          <span>{item.menuitem}</span>
+                        )}
+                      </Nav.Link>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <NavDropdownMain
+                      item={item}
+                      key={index}
+                      onClick={(value) => setExpandedMenu(value)}
+                    />
+                  );
+                }
+              })}
+            </Nav>
+
+            {/* Right side quick / shortcut menu  */}
+            <div className="ms-auto mt-3 mt-lg-0">
+              <div className="d-flex align-items-center">
+                {user ? (
+                  <>
+                    {user?.role === "ADMIN" && (
+                      <Link
+                        to="/admin/dashboard"
+                        onClick={() => setExpandedMenu(false)}
+                        className="btn btn-danger ms-3"
+                        style={{ fontWeight: '600' }}
+                      >
+                        <i className="bi bi-shield-lock-fill me-1"></i>
+                        Admin
+                      </Link>
+                    )}
+                    <QuickMenu />
+                    <Link
+                      onClick={() => {
+                        logoutUser();
+                        setExpandedMenu(false);
+                      }}
+                      className="btn btn-dark ms-3"
+                    >
+                      Logout
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login/"
+                      onClick={(value) => setExpandedMenu(false)}
+                      className="btn btn-outline-dark ms-3"
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      to="/register/"
+                      onClick={(value) => setExpandedMenu(false)}
+                      className="btn btn-dark ms-1"
+                    >
+                      Sign up
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+            {/* end of right side quick / shortcut menu  */}
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <LoadingBar />
+    </div>
+  );
+};
+
+let NavbarDefaultRoutes = [
+  {
+    id: uuid(),
+    menuitem: "Your Dashboard",
+    link: "/dashboard/",
+    slug: "dashboard",
+  },
+  {
+    id: uuid(),
+    menuitem: "Listening Books",
+    link: "/ieltstest/listening/",
+    slug: "listening",
+  },
+  {
+    id: uuid(),
+    menuitem: "Reading Books",
+    link: "/ieltstest/reading/",
+    slug: "reading",
+  },
+  {
+    id: uuid(),
+    menuitem: "Writing Books",
+    link: "/ieltstest/writing/",
+    slug: "writing",
+  },
+  {
+    id: uuid(),
+    menuitem: "Speaking Books",
+    link: "/ieltstest/speaking/",
+    slug: "speaking",
+  },
+];
+
+export default AppNavbar;

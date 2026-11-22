@@ -1,0 +1,246 @@
+// Speaking Practice Page Styles
+
+// Color variables
+$speaking-primary: #E52E2E;
+$speaking-secondary: #C81E1E;
+$speaking-warning: #F59E0B;
+$speaking-danger: #DC2626;
+$speaking-success: #10B981;
+$speaking-light: #FFF7ED;
+
+// Header
+.speaking-header {
+  background: linear-gradient(135deg, #FF4D2E 0%, #C81E1E 100%);
+  color: #FFFFFF;
+  padding: 40px 30px;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: linear-gradient(to bottom, rgba(181, 22, 22, 0.2), transparent);
+  }
+}
+
+// Button variants
+.btn-speaking {
+  background: linear-gradient(135deg, #FF4D2E 0%, #C81E1E 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  
+  &:hover {
+    background: linear-gradient(135deg, #E52E2E 0%, #B81D1D 100%);
+    color: white;
+  }
+  
+  &:active, &:focus {
+    background: linear-gradient(135deg, #C81E1E 0%, #A81A1A 100%);
+    color: white;
+  }
+}
+
+.btn-outline-speaking {
+  border: 2px solid $speaking-primary;
+  color: $speaking-primary;
+  font-weight: 600;
+  background: white;
+  
+  &:hover {
+    background: $speaking-primary;
+    color: white;
+    border-color: $speaking-primary;
+  }
+}
+
+// Border and text utilities
+.border-speaking {
+  border-color: $speaking-primary !important;
+}
+
+.text-speaking {
+  color: $speaking-primary !important;
+}
+
+.bg-speaking {
+  background: linear-gradient(135deg, #FF4D2E 0%, #C81E1E 100%) !important;
+}
+
+// Recording indicator
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 1.1em;
+  color: $speaking-primary;
+  font-weight: 600;
+  
+  .recording-dot {
+    width: 12px;
+    height: 12px;
+    background: $speaking-primary;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(229, 46, 46, 0.2);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+// Timer display
+.timer-display {
+  font-size: 2.5em;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  
+  &.text-warning {
+    color: $speaking-warning !important;
+  }
+  
+  &.text-danger {
+    color: $speaking-danger !important;
+    animation: blink 1s infinite;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// Topic points list
+.topic-points {
+  list-style-type: disc;
+  padding-left: 30px;
+  
+  li {
+    font-size: 1.05em;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+}
+
+// Band score display
+.band-score-display {
+  padding: 20px;
+  
+  p {
+    font-size: 1.2em;
+    color: #6B7280;
+    font-weight: 500;
+  }
+}
+
+// Criteria cards
+.criteria-card {
+  border: 2px solid #E5E7EB;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: $speaking-primary;
+    box-shadow: 0 4px 12px rgba(229, 46, 46, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  h6 {
+    font-size: 0.9em;
+    color: #6B7280;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+}
+
+// Transcripts section
+.transcripts-section {
+  .card {
+    border-left: 4px solid $speaking-primary;
+  }
+}
+
+// Evaluation result
+.evaluation-result {
+  border: 2px solid $speaking-primary;
+  
+  h4, h5 {
+    color: $speaking-primary;
+    font-weight: 600;
+  }
+  
+  .bg-light {
+    background-color: #F9FAFB !important;
+  }
+}
+
+// Success icon animation
+.success-icon {
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .speaking-header {
+    padding: 30px 20px;
+    
+    h1 {
+      font-size: 1.8em;
+    }
+    
+    p {
+      font-size: 0.9em;
+    }
+  }
+  
+  .timer-display {
+    font-size: 2em;
+  }
+  
+  .btn-lg {
+    font-size: 1em;
+    padding: 10px 20px;
+  }
+}
+
+// Progress bar
+.progress {
+  height: 25px;
+  background-color: #E5E7EB;
+  
+  .progress-bar {
+    background: linear-gradient(135deg, #FF4D2E 0%, #C81E1E 100%);
+    font-weight: 600;
+  }
+}
+
+
